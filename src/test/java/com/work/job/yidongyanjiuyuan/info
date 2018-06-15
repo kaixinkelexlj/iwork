@@ -1,0 +1,12 @@
+移动研究院%>_<%
+
+查看unix32位或64位
+修改mysql表字符集
+mysql忘记root密码
+load data [local] infile忽略错误--需要使用mysqlimport
+二分查找
+组合穷举
+二叉树遍历
+hadoop hive pig源码
+tcp和udp是传输层协议//tcp面向连接，udp面向非连接
+char a = '中';//char可以标识一个中文字符

@@ -1,0 +1,55 @@
+package com.de.degmsg.util;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+public class RPCService {
+    public Map<?, ?> invokeToJsonResult(String apiNamespace, String apiName, int apiVersion, String protocol, Map<String, String> params) throws IOException{
+        final httpClient httpClient = new HttpClient(httpClientParams, connectionManager);
+
+        String urlPath = buildInvokeUrlPath(apiNamespace, apiName, apiVersion, protocol);
+        final PostMethod method = new PostMethod(buildInvokeUrl(urlPath));
+        List<String> paramValueList = new ArrayList<String>();
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            paramValueList.add(entry.getKey() + entry.getValue());
+            method.setParameter(entry.getKey(), entry.getValue());
+        }
+        final String[] datas = new String[1 + paramValueList.size()];
+        datas[0] = urlPath;
+        Collections.sort(paramValueList);
+        for (int i = 0; i < paramValueList.size(); i++) {
+            datas[i+1] = paramValueList.get(i);
+        }
+        final byte[] signature = SecurityUtil.hmacSha1(datas, StringUtil.toBytes(aopInfo.getSecretKey()));
+        method.setParameter("_aop_signature", StringUtil.encodeHexStr(signature));
+
+        int status = httpClient.executeMethod(method);
+        try{
+            if(status >= 300 || status < 200){
+                throw new RuntimeException("invoke api failed, api:" + apiNamespace + ":" + apiName + "-" + apiVersion 
+                        + " status:" + status + " response:" + method.getResponseBodyAsString());
+            }
+            return parserResponse(method);
+        }finally{
+            method.releaseConnection();
+        }
+    }
+    private Map<?, ?> parserResponse(HttpMethod method) throws IOException{
+        InputStream istream = null;
+        try{
+            istream = method.getResponseBodyAsStream();
+            Map<?, ?> result = null;
+            //TODO ½âÎöresult
+            return result;
+        }finally{
+            if(istream != null){
+                istream.close();
+            }
+        }
+    }
+}
+
