@@ -10,6 +10,8 @@ import java.net.Socket;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 
+import com.fun.cmd.CmdExecutor;
+import com.fun.cmd.CmdExecutors;
 import org.apache.commons.lang.StringUtils;
 
 /***
@@ -44,34 +46,55 @@ public class EventTask implements Runnable {
 
             for (; ; ) {
 
-                String line = in.readLine();
-                if ("exit".equalsIgnoreCase(line)) {
-                    break;
-                }
+                try{
+                    String line = in.readLine();
+                    if ("exit".equalsIgnoreCase(line)) {
+                        break;
+                    }
 
-                // 通过输入流接收客户端信息
+                    // 通过输入流接收客户端信息
 
-                System.out.println("[CommandCenter] receive a socket task:" + line + "," + socket.getInetAddress());
+                    System.out.println("[CommandCenter] receive a socket task:" + line + "," + socket.getInetAddress());
 
-                Request request = parseRequest(line);
+
+                    String[] arr = line.split(" ");
+                    if(arr.length > 0 && "exec".equalsIgnoreCase(arr[0])){
+                        if(arr.length > 1){
+                            int val = execBash(line.replaceAll(arr[0], "").trim(), outputStream);
+                            if(val != 0){
+                                println(out, "error code[" + val + "]");
+                            }
+                        }else{
+                            println(out, "");
+                        }
+                        continue;
+                    }
+
+                    Request request = parseRequest(line);
 
                 /*println.write("fun>");
                 //println.print("HTTP/1.1 200 OK\r\n\r\n");
                 println.flush();*/
-                if (StringUtils.isBlank(request.getTarget())) {
-                    //println(out, "query parameter is blank");
-                    println(out, null);
-                    continue;
+                    if (StringUtils.isBlank(request.getTarget())) {
+                        //println(out, "query parameter is blank");
+                        println(out, null);
+                        continue;
+                    }
+
+                    ICommandProcessor command = CommandCenter.getCommand(request.getTarget());
+                    if (null != command) {
+                        command.execute(outputStream, request);
+                        println(out);
+                    } else {
+                        println(out, "query parameter is incorrect");
+                    }
+                    RecordLog.info("[CommandCenter] deal a socket task:" + line + "," + socket.getInetAddress());
+                }catch (Exception ex){
+                    println(out, "CommandCenter failed, message is " + ex.getMessage());
+                    RecordLog.info("CommandCenter close serverSocket failed", ex);
                 }
 
-                ICommandProcessor command = CommandCenter.getCommand(request.getTarget());
-                if (null != command) {
-                    command.execute(outputStream, request);
-                    println(out);
-                } else {
-                    println(out, "query parameter is incorrect");
-                }
-                RecordLog.info("[CommandCenter] deal a socket task:" + line + "," + socket.getInetAddress());
+
             }
 
         } catch (Exception e) {
@@ -93,6 +116,11 @@ public class EventTask implements Runnable {
             }
         }
 
+    }
+
+    private int execBash(String s, OutputStream outputStream) throws Exception{
+        CmdExecutor executor = CmdExecutors.newBashExecutor();
+        return executor.exec(s, outputStream);
     }
 
     private void println(PrintWriter out) {
