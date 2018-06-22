@@ -1,9 +1,11 @@
 package com.fun.netty;
 
 import java.net.SocketAddress;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -110,8 +112,13 @@ public class NettyRemotingClient {
     //private RPCHook rpcHook;
 
     private void processMessageReceived(ChannelHandlerContext ctx, RemotingCommand cmd) {
-        if (cmd != null) {
-            System.out.println("client receive response==>" + JSON.toJSONString(cmd));
+        if (cmd == null) {
+            return;
+        }
+        System.out.println("client receive response==>" + JSON.toJSONString(cmd));
+        ResponseFuture rep = this.responseTable.get(cmd.getOpaque());
+        if (rep != null) {
+            rep.setResponseCommand(cmd);
         }
     }
 
@@ -144,29 +151,28 @@ public class NettyRemotingClient {
                         defaultEventExecutorGroup, //
                         //new NettyEncoder(), //
                         //new NettyDecoder(), //
-                        new NettySimpleEncoder(),
-                        new NettySimpleDecoder(Integer.MAX_VALUE),
+                        new NettyClientEncoder(),
+                        new NettyClientDecoder(Integer.MAX_VALUE),
                         new IdleStateHandler(0, 0, nettyClientConfig.getClientChannelMaxIdleTimeSeconds()),//
                         new NettyConnetManageHandler(), //
                         new NettyClientHandler());
                 }
             });
 
-        /*// 每隔1秒扫描下异步调用超时情况
+        // 每隔1秒扫描下异步调用超时情况
         this.timer.scheduleAtFixedRate(new TimerTask() {
 
             @Override
             public void run() {
                 try {
                     NettyRemotingClient.this.scanResponseTable();
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     log.error("scanResponseTable exception", e);
                 }
             }
         }, 1000 * 3, 1000);
 
-        if (this.channelEventListener != null) {
+        /*if (this.channelEventListener != null) {
             this.nettyEventExecuter.start();
         }*/
     }
@@ -490,6 +496,19 @@ public class NettyRemotingClient {
         }
 
         return null;
+    }
+
+    private void scanResponseTable() {
+        if (this.responseTable.isEmpty()) {
+            return;
+        }
+        Iterator<Integer> itr = this.responseTable.keySet().iterator();
+        for (; itr.hasNext(); ) {
+            ResponseFuture rep = this.responseTable.get(itr.next());
+            if ((rep.getBeginTimestamp() + rep.getTimeoutMillis() + 1000) <= System.currentTimeMillis()) {
+                itr.remove();
+            }
+        }
     }
 
     class ChannelWrapper {

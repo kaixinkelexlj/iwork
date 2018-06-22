@@ -18,6 +18,7 @@ public class TestClient {
         request.setValue("request from TestClient-new\n");
         response = client.invokeSync("127.0.0.1:8888", request, 3000L);
         System.out.println(JSON.toJSONString(response));
+        System.exit(0);
     }
 
 }
