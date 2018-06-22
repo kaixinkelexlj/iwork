@@ -1,7 +1,5 @@
 package com.work.job;
 
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -86,6 +84,23 @@ public class MainTest2 extends AbstractTest {
         System.out.println(s.max(Long::compareTo));
         System.out.println(s.min(Long::compareTo));*/
         System.out.println(0 == 0f);
+    }
+
+    @Test
+    public void test() throws Exception {
+
+        AtomicInteger i = new AtomicInteger(Integer.MAX_VALUE);
+        System.out.println(i.get());
+        System.out.println(Integer.toBinaryString(i.get()));
+        System.out.println(Integer.MIN_VALUE);
+        System.out.println(Integer.toBinaryString(Integer.MIN_VALUE));
+        for (int k = 0; k < 100; k++) {
+            System.out.println(i.incrementAndGet());
+            System.out.println(Integer.toBinaryString(i.get()));
+        }
+        System.out.println(Integer.toBinaryString(-2));
+        System.out.println(Integer.toBinaryString(2));
+
     }
 
     @Test

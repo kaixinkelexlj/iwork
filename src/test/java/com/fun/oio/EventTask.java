@@ -45,16 +45,17 @@ public class EventTask implements Runnable {
                 outputStream, Charset.forName("GBK")));
 
             for (; ; ) {
-
                 try{
                     String line = in.readLine();
                     if ("exit".equalsIgnoreCase(line)) {
                         break;
                     }
 
-                    // 通过输入流接收客户端信息
+                    if(line != null){
+                        // 通过输入流接收客户端信息
+                        System.out.println("[CommandCenter] receive a socket task:" + line + "," + socket.getInetAddress());
+                    }
 
-                    System.out.println("[CommandCenter] receive a socket task:" + line + "," + socket.getInetAddress());
 
 
                     String[] arr = line.split(" ");
@@ -133,7 +134,7 @@ public class EventTask implements Runnable {
             out.println();
             out.flush();
         }
-        out.write(">");
+        out.write(CommandCenter.PROMOTION);
         out.flush();
     }
 

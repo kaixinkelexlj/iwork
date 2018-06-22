@@ -5,7 +5,7 @@
 
     <groupId>com.fun</groupId>
     <artifactId>iwork</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>iwork</name>
@@ -23,6 +23,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <lucene.version>5.5.1</lucene.version>
+        <jline.version>3.7.1</jline.version>
     </properties>
 
     <dependencies>
@@ -204,6 +205,14 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.8.8</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- jline -->
+        <dependency>
+            <groupId>org.jline</groupId>
+            <artifactId>jline</artifactId>
+            <version>${jline.version}</version>
             <scope>test</scope>
         </dependency>
 

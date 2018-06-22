@@ -39,6 +39,9 @@ public class NettySimpleDecoder extends LineBasedFrameDecoder {
     public Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
         try {
             ByteBuf buf = (ByteBuf)super.decode(ctx, in);
+            if(buf == null){
+                return null;
+            }
             RemotingCommand command = new RemotingCommand();
             command.setValue(buf.toString(NettySystemConfig.DefaultCharset));
             System.out.println("receive message==>" + command.getValue());

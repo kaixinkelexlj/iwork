@@ -16,21 +16,20 @@
 package com.fun.netty;
 
 import java.nio.ByteBuffer;
-import java.util.Optional;
 
 import com.alibaba.fastjson.JSON;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.util.StringUtils;
 
 /**
  * 协议编码器
  *
- * @author shijia.wxr<vintage.wang               @               gmail.com>
+ * @author shijia.wxr<vintage.wang                               @                               gmail.com>
  * @since 2013-7-13
  */
 public class NettySimpleEncoder extends MessageToByteEncoder<RemotingCommand> {
@@ -44,7 +43,7 @@ public class NettySimpleEncoder extends MessageToByteEncoder<RemotingCommand> {
             //fixme lujun.xlj
             if (remotingCommand != null) {
                 System.out.println(JSON.toJSONString(remotingCommand));
-                if(org.apache.commons.lang.StringUtils.isNotBlank(remotingCommand.getValue())){
+                if (StringUtils.isNotBlank(remotingCommand.getValue())) {
                     out.writeBytes(ByteBuffer.wrap((remotingCommand.getValue() + "\n").getBytes(NettySystemConfig.DefaultCharset)));
                 }
             }
