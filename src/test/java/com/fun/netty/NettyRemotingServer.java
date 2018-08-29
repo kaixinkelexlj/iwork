@@ -1,7 +1,6 @@
 package com.fun.netty;
 
 import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
 import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,7 +10,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.alibaba.fastjson.JSON;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelFuture;
@@ -139,8 +137,8 @@ public class NettyRemotingServer {
                             defaultEventExecutorGroup, //
                             //new NettyEncoder(), //
                             //new NettyDecoder(), //
-                            new NettySimpleEncoder(),
-                            new NettySimpleDecoder(Integer.MAX_VALUE),
+                            new NettyServerEncoder(),
+                            new NettyServerDecoder(Integer.MAX_VALUE),
                             new IdleStateHandler(0, 0, nettyServerConfig
                                 .getServerChannelMaxIdleTimeSeconds()),//
                             new NettyConnetManageHandler(), //
@@ -191,9 +189,11 @@ public class NettyRemotingServer {
 
     public void processMessageReceived(ChannelHandlerContext ctx, RemotingCommand msg) throws Exception {
         final RemotingCommand cmd = msg;
-        if (cmd != null) {
-            System.out.println("processMessageReceived==>" + JSON.toJSONString(cmd));
+        if(cmd == null){
+            return;
         }
+        System.out.println("processMessageReceived==>" + JSON.toJSONString(cmd));
+        cmd.setMessage("server receive[" + cmd + "]");
         ctx.channel().writeAndFlush(cmd).addListener((ChannelFutureListener)f -> {
             if (f.isSuccess()) {
                 System.out.println("response ok");

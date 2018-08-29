@@ -15,23 +15,26 @@
  */
 package com.fun.netty;
 
+import com.alibaba.fastjson.JSON;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LineBasedFrameDecoder;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
  * 协议解码器
  *
- * @author shijia.wxr<vintage.wang   @   gmail.com>
+ * @author shijia.wxr<vintage.wang       @       gmail.com>
  * @since 2013-7-13
  */
-public class NettySimpleDecoder extends LineBasedFrameDecoder {
+public class NettyServerDecoder extends LineBasedFrameDecoder {
 
-    private static final Log log = LogFactory.getLog(NettySimpleDecoder.class);
+    private static final Log log = LogFactory.getLog(NettyServerDecoder.class);
 
-    public NettySimpleDecoder(int maxLength) {
+    public NettyServerDecoder(int maxLength) {
         super(maxLength);
     }
 
@@ -39,9 +42,16 @@ public class NettySimpleDecoder extends LineBasedFrameDecoder {
     public Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
         try {
             ByteBuf buf = (ByteBuf)super.decode(ctx, in);
-            RemotingCommand command = new RemotingCommand();
-            command.setValue(buf.toString(NettySystemConfig.DefaultCharset));
-            System.out.println("receive message==>" + command.getValue());
+            if (buf == null) {
+                return null;
+            }
+            String jsonValue = buf.toString(NettySystemConfig.DefaultCharset);
+            System.out.println("receive message==>" + jsonValue);
+            if (StringUtils.isBlank(jsonValue)) {
+                return null;
+            }
+            RemotingCommand command = JSON.parseObject(jsonValue, RemotingCommand.class);
+
             return command;
         } catch (Throwable e) {
             log.error("decode exception, " + RemotingUtil.parseChannelRemoteAddr(ctx.channel()), e);

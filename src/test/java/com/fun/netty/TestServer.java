@@ -4,7 +4,7 @@ package com.fun.netty;
  * @author xulujun
  * @date 2018/06/14
  */
-public class ServerTest {
+public class TestServer {
 
     public static void main(String[] args) throws InterruptedException {
         NettyServerConfig config = new NettyServerConfig();
@@ -12,6 +12,5 @@ public class ServerTest {
         nettyRemotingServer.start();
         Thread.currentThread().join();
     }
-
 
 }
