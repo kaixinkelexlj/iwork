@@ -496,7 +496,7 @@ public class LuceneUtils {
      * @param page
      * @throws IOException
      */
-    public static void pageQuery(IndexSearcher searcher, Directory directory, Query query, com.fun.lucence.util.Page<Document> page) {
+    public static void pageQuery(IndexSearcher searcher, Directory directory, Query query, Page<Document> page) {
         int totalRecord = searchTotalRecord(searcher, query);
         // 设置总记录数
         page.setTotalRecord(totalRecord);
@@ -539,7 +539,7 @@ public class LuceneUtils {
      * @param writerConfig
      * @throws IOException
      */
-    public static void pageQuery(IndexSearcher searcher, Directory directory, Query query, com.fun.lucence.util.Page<Document> page, HighlighterParam highlighterParam, IndexWriterConfig writerConfig) throws IOException {
+    public static void pageQuery(IndexSearcher searcher, Directory directory, Query query, Page<Document> page, HighlighterParam highlighterParam, IndexWriterConfig writerConfig) throws IOException {
         IndexWriter writer = null;
         // 若未设置高亮
         if (null == highlighterParam || !highlighterParam.isHighlight()) {

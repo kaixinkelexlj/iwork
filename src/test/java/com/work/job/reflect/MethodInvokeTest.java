@@ -15,39 +15,41 @@ import java.lang.reflect.Method;
  */
 public class MethodInvokeTest {
 
-    public static void main(String[] args) throws Exception {
-        MethodFun target = new MethodFun();
+  public static void main(String[] args) throws Exception {
+    MethodFun target = new MethodFun();
 
-        //1次
-        Method method = MethodFun.class.getDeclaredMethod("say");
-        method.setAccessible(true);
-        method.invoke(target);
+    //1次
+    Method method = MethodFun.class.getDeclaredMethod("say");
+    method.setAccessible(true);
+    method.invoke(target);
+    System.out.println(method.getReturnType());
+    System.out.println(method.invoke(target));
 
-        //13次
-        for (int i = 0; i <= 13; i++) {
-            method = MethodFun.class.getDeclaredMethod("say");
-            method.setAccessible(true);
-            method.invoke(target);
-        }
-
-        //1次（第15次）
-        method = MethodFun.class.getDeclaredMethod("say");
-        method.setAccessible(true);
-        method.invoke(target);
-
-        //16次
-        method = MethodFun.class.getDeclaredMethod("say");
-        method.setAccessible(true);
-        method.invoke(target);
-
+    //13次
+    for (int i = 0; i <= 13; i++) {
+      method = MethodFun.class.getDeclaredMethod("say");
+      method.setAccessible(true);
+      method.invoke(target);
     }
 
-    public static class MethodFun {
+    //1次（第15次）
+    method = MethodFun.class.getDeclaredMethod("say");
+    method.setAccessible(true);
+    method.invoke(target);
 
-        private void say() {
-            System.out.println("I am stealer");
-        }
+    //16次
+    method = MethodFun.class.getDeclaredMethod("say");
+    method.setAccessible(true);
+    method.invoke(target);
 
+  }
+
+  public static class MethodFun {
+
+    private void say() {
+      System.out.println("I am stealer");
     }
+
+  }
 
 }

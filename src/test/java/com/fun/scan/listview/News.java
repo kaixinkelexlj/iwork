@@ -5,6 +5,7 @@
 package com.fun.scan.listview;
 
 import com.fun.scan.annotation.ListView;
+import com.fun.scan.annotation.ListView;
 
 
 /**
@@ -13,7 +14,7 @@ import com.fun.scan.annotation.ListView;
  * @version $Id: News.java, v 0.1 Nov 17, 2015 5:15:31 PM lujun.xlj Exp $
  */
 @ListView(url = "/news/list")
-public class News implements com.fun.scan.listview.ListView{
+public class News implements com.fun.scan.listview.ListView {
 
     /** 
      * @see com.fun.scan.listview.ListView#render()

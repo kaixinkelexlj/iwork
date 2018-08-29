@@ -9,21 +9,31 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-aop.xml")
 public class HelloWorldServiceTest {
-    @Autowired
-    HelloWorldService helloWorldService;
-    
-    @Test
-    public void testSay() throws Exception{
-        helloWorldService.say();
-    }
-    
-    @Test
-    public void testSay2() throws Exception{
-        helloWorldService.say("xlj", "hhq");
-    }
-    
-    @Test
-    public void testLock() throws Exception{
-        helloWorldService.sayOneByOne();
-    }
+
+  @Autowired
+  HelloWorldService helloWorldService;
+
+  @Autowired
+  FunServiceProvider funServiceProvider;
+
+  @Test
+  public void testSay() throws Exception {
+    helloWorldService.say();
+  }
+
+  @Test
+  public void testSay2() throws Exception {
+    helloWorldService.say("xlj", "hhq");
+  }
+
+  @Test
+  public void testLock() throws Exception {
+    helloWorldService.sayOneByOne();
+  }
+
+  @Test
+  public void testFun() throws Exception{
+    funServiceProvider.hello();
+    funServiceProvider.world();
+  }
 }

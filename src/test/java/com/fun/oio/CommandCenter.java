@@ -17,6 +17,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor.DiscardPolicy;
 import java.util.concurrent.TimeUnit;
 
+import com.sun.corba.se.spi.monitoring.StatisticsAccumulator;
 import org.apache.commons.lang.StringUtils;
 
 public class CommandCenter {
@@ -28,6 +29,8 @@ public class CommandCenter {
     private static volatile boolean useCustomerPort = false;
     private static Set<String> modules = new HashSet<>();
     private static int defaultServerSocketTimeout;
+
+    public static final String PROMOTION =  "fun>";
 
     public CommandCenter() {
     }
@@ -168,7 +171,7 @@ public class CommandCenter {
 
                     out = new PrintWriter(new OutputStreamWriter(
                         socket.getOutputStream(), Charset.forName("utf-8")));
-                    out.write(">");
+                    out.write(PROMOTION);
                     out.flush();
 
                     EventTask eventTask = new EventTask(socket);

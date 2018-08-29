@@ -9,6 +9,8 @@ import java.io.OutputStream;
  */
 public interface CmdExecutor {
 
-    int exec(String cmd, OutputStream outputStream) throws IOException, Exception;
+  int exec(String cmd, OutputStream outputStream) throws IOException, Exception;
+
+  int exec(OutputStream outputStream, String... cmd) throws IOException, Exception;
 
 }

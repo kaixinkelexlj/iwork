@@ -39,7 +39,7 @@ public class TestClass implements Serializable {
     @Test
     public void testGeneric() throws Exception {
         List<String> a = new ArrayList<>(100);
-        System.out.println(
-            ((ParameterizedType)a.getClass().getGenericSuperclass()).getActualTypeArguments()[0].getClass().getName());
+        System.out.println(JSON.toJSONString(
+            ((ParameterizedType)a.getClass().getGenericSuperclass()).getActualTypeArguments()[0]));
     }
 }

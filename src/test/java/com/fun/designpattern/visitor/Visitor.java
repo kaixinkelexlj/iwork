@@ -1,9 +1,8 @@
 package com.fun.designpattern.visitor;
 
-import java.util.List;
-
 import com.fun.designpattern.visitor.impl.FloatElement;
 import com.fun.designpattern.visitor.impl.StringElement;
+import java.util.List;
 
 
 public interface Visitor {

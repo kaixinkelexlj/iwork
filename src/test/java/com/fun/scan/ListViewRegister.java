@@ -4,6 +4,7 @@
  */
 package com.fun.scan;
 
+import com.fun.scan.listview.ListView;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -86,7 +87,8 @@ public class ListViewRegister implements BeanDefinitionRegistryPostProcessor, Be
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof ListView) {
-            com.fun.scan.annotation.ListView annotation = bean.getClass().getAnnotation(com.fun.scan.annotation.ListView.class);
+            com.fun.scan.annotation.ListView annotation = bean.getClass().getAnnotation(
+                com.fun.scan.annotation.ListView.class);
             if (annotation != null) {
                 ListView view = (ListView) bean;
                 uriMap.put(annotation.url(), view);

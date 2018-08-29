@@ -10,18 +10,27 @@ import java.io.OutputStream;
  */
 public class BashExecutor implements CmdExecutor {
 
-    @Override
-    public int exec(String cmd, OutputStream outputStream) throws Exception {
-        ProcessBuilder pb = new ProcessBuilder(cmd.split(" "));
-        pb.redirectErrorStream(true);
-        Process process = pb.start();
-        output(process.getInputStream(), outputStream);
-        return process.waitFor();
+  @Override
+  public int exec(String cmd, OutputStream outputStream) throws Exception {
+    ProcessBuilder pb = new ProcessBuilder(cmd.split(" "));
+    pb.redirectErrorStream(true);
+    Process process = pb.start();
+    output(process.getInputStream(), outputStream);
+    return process.waitFor();
 
-    }
+  }
 
-    private void output(InputStream inputStream, OutputStream outputStream) throws IOException {
-        org.apache.commons.io.IOUtils.copy(inputStream, outputStream);
-    }
+  @Override
+  public int exec(OutputStream outputStream, String... cmd) throws IOException, Exception {
+    ProcessBuilder pb = new ProcessBuilder(cmd);
+    pb.redirectErrorStream(true);
+    Process process = pb.start();
+    output(process.getInputStream(), outputStream);
+    return process.waitFor();
+  }
+
+  private void output(InputStream inputStream, OutputStream outputStream) throws IOException {
+    org.apache.commons.io.IOUtils.copy(inputStream, outputStream);
+  }
 
 }
