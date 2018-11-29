@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fun.codec.TestRSA;
-import com.google.common.collect.Maps;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.io.Files;
 import com.work.AbstractTest;
 import com.work.job.bean.Son;
@@ -26,8 +26,10 @@ import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
@@ -46,6 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
@@ -65,7 +68,7 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.junit.Test;
 import org.springframework.beans.SimpleTypeConverter;
 import org.springframework.beans.TypeConverter;
-import org.springframework.boot.web.embedded.netty.NettyWebServer;
+import org.springframework.util.Base64Utils;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.ReflectionUtils;
@@ -80,17 +83,125 @@ public class MainTest2 extends AbstractTest {
   }
 
   public static void main(String[] args) throws Exception {
-    //testCast();
-        /*Stream<Long> s = LongStream.rangeClosed(1, 100).boxed();
-        System.out.println(s.max(Long::compareTo));
-        System.out.println(s.min(Long::compareTo));*/
-    System.out.println(0 == 0f);
-    /*System.out.println(System.getProperty("USER"));
-    System.out.println(System.getenv("USER"));*/
+    /*System.out.println(Integer.MAX_VALUE);
+
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(new SimpleDateFormat("yyyyMMdd").parse("20181115"));
+    calendar.add(Calendar.MONTH, -11);
+    calendar.add(Calendar.DATE, -15);
+    System.out.println(calendar.getTime());*/
+
+    String url = "http://bigdata-test.xiaojukeji.com/report/v1/fetch-tool/redirect/v1?batchId=352849&batchOwner=xxx";
+    System.out.println(URLEncoder.encode(url, "utf-8"));
+
   }
 
   @Test
-  public void testMapCast() throws Exception{
+  public void testURL() throws Exception{
+    URL url = new URL("http://www.baidu.com?kw=test");
+    System.out.println(url.toString());
+  }
+
+  @Test
+  public void testUriEncode() throws Exception{
+    System.out.println(URLEncoder.encode("http://bigdata-test.xiaojukeji.com/job-center"));
+    String a = "http%3A%2F%2Fmis.diditaxi.com.cn%2Fauth%2F%3Fjumpto%3Dhttp%253A%252F%252Fbigdata-test.xiaojukeji.com%252Fdps_index%26app_id%3D204%26callback_index%3D0";
+    System.out.println(URLDecoder.decode(a, "utf-8"));
+  }
+
+  @Test
+  public void testReplace() throws Exception{
+    String a = "hello \n world";
+    System.out.println(a);
+    System.out.println(a.replaceAll("\n", "\n\n"));
+    System.out.println(a.replaceAll("\n", "<br/>"));
+  }
+
+  @Test
+  public void testPattern() throws Exception{
+    Pattern pattern = Pattern.compile("year=(.*)/month=(.*)/day=(.*)");
+    System.out.println(pattern.matcher("year=2018/month=216/day=11/hour=111").find());
+    System.out.println(pattern.matcher("year=2018/month=216/day=11/hour=111").matches());
+  }
+
+  @Test
+  public void testBase64() throws Exception {
+    String encode = Base64Utils.encodeToUrlSafeString("xxfsfds_fs%fds".getBytes("utf-8"));
+    System.out.println(encode);
+    System.out.println(new String(Base64Utils.decodeFromUrlSafeString(encode), "utf-8"));
+  }
+
+  @Test
+  public void testCache() throws Exception {
+    com.google.common.cache.Cache<String, String> cache = CacheBuilder.newBuilder()
+        .expireAfterAccess(3, TimeUnit.SECONDS).build();
+    cache.put("hello", "world");
+    cache.put("xx", "gg");
+
+    System.out.println(cache.size());
+
+    cache.invalidate("xx");
+    System.out.println(cache.size());
+    System.out.println(TimeUnit.SECONDS.toMillis(5));
+    Thread.sleep(TimeUnit.SECONDS.toMillis(5));
+    System.out.println(cache.size());
+    System.out.println(cache.getIfPresent("hello"));
+
+  }
+
+  @Test
+  public void testAtomicInteger() throws Exception {
+    System.out.println(new AtomicInteger(Integer.MAX_VALUE).incrementAndGet());
+  }
+
+  @Test
+  public void testProcessBuilder() throws Exception {
+    ProcessBuilder processBuilder = new ProcessBuilder("sleep", "100");
+    processBuilder.redirectErrorStream(true);
+    Process process = processBuilder.start();
+    Thread thread = new Thread(() -> {
+      try {
+        BufferedReader reader = null;
+        reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "utf-8"));
+        for (String line = null; (line = reader.readLine()) != null; ) {
+          System.out.println(line);
+        }
+        Thread.sleep(100000);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    });
+    thread.setDaemon(true);
+    thread.start();
+    thread.join(3000);
+    process.destroy();
+    System.out.println(process.waitFor());
+    //System.out.println(process.waitFor(4, TimeUnit.SECONDS));
+  }
+
+  @Test
+  public void testRenamePackage() throws Exception {
+
+  }
+
+  @Test
+  public void test() throws Exception {
+    Integer a = null;
+    System.out.println(a);
+    System.out.println("null".equals(JSON.toJSONString(null)));
+  }
+
+  @Test
+  public void testArrayCast() throws Exception {
+    Integer[] values = new Integer[]{};
+    Object[] args = new Object[0];
+    System.out.println((values instanceof Object[]));
+    System.out.println(args instanceof Object[]);
+    System.out.println(args instanceof Object);
+  }
+
+  @Test
+  public void testMapCast() throws Exception {
   }
 
   @Test

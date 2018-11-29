@@ -59,7 +59,7 @@ public class NettyRemotingServer {
 
     public NettyRemotingServer(final NettyServerConfig nettyServerConfig,
                                final ChannelEventListener channelEventListener) {
-        //fixme lujun.xlj
+        //TODO lujun.xlj
         /*super(nettyServerConfig.getServerOnewaySemaphoreValue(), nettyServerConfig
             .getServerAsyncSemaphoreValue());*/
         this.serverBootstrap = new ServerBootstrap();
@@ -159,7 +159,7 @@ public class NettyRemotingServer {
             throw new RuntimeException("this.serverBootstrap.bind().sync() InterruptedException", e1);
         }
 
-        //fixme lujun.xlj
+        //TODO lujun.xlj
         /*if (this.channelEventListener != null) {
             this.nettyEventExecuter.start();
         }*/
@@ -214,7 +214,7 @@ public class NettyRemotingServer {
 
     }
 
-    //fixme lujun.xlj handle event
+    //TODO lujun.xlj handle event
     class NettyConnetManageHandler extends ChannelDuplexHandler {
         @Override
         public void channelRegistered(ChannelHandlerContext ctx) throws Exception {

@@ -40,7 +40,7 @@ public class NettyServerEncoder extends MessageToByteEncoder<RemotingCommand> {
     public void encode(ChannelHandlerContext ctx, RemotingCommand remotingCommand, ByteBuf out)
         throws Exception {
         try {
-            //fixme lujun.xlj
+            //TODO lujun.xlj
             if (remotingCommand != null) {
                 System.out.println(JSON.toJSONString(remotingCommand));
                 if (StringUtils.isNotBlank(remotingCommand.getValue())) {

@@ -40,7 +40,7 @@ public class NettyClientEncoder extends MessageToByteEncoder<RemotingCommand> {
     public void encode(ChannelHandlerContext ctx, RemotingCommand remotingCommand, ByteBuf out)
         throws Exception {
         try {
-            //fixme lujun.xlj
+            //TODO lujun.xlj
             if (remotingCommand != null) {
                 if (StringUtils.isNotBlank(remotingCommand.getValue())) {
                     out.writeBytes(ByteBuffer.wrap((JSON.toJSONString(remotingCommand) + "\n").getBytes(NettySystemConfig.DefaultCharset)));
