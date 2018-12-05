@@ -4,6 +4,7 @@ lexer grammar XMLLexer;
 OPEN        :   '<'                 -> pushMode(INSIDE) ;
 COMMENT     :   '<!--' .*? '-->'    -> skip ;
 EntityRef   :   '&' [a-z]+ ';' ;
+
 TEXT        :   ~('<'|'&')+ ;           // match any 16 bit char minus < and &
 
 // ----------------- Everything INSIDE of a tag ---------------------
