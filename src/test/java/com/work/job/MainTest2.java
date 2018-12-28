@@ -5,6 +5,8 @@ import com.alibaba.fastjson.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fun.codec.TestRSA;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.io.Files;
 import com.work.AbstractTest;
 import com.work.job.bean.Son;
@@ -26,7 +28,6 @@ import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -48,7 +49,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
@@ -78,6 +78,18 @@ public class MainTest2 extends AbstractTest {
 
   private static final Integer[] ORDER_STATUS_INCLUDE = new Integer[]{2, 6};
 
+  private LoadingCache<String, String> cache = CacheBuilder.newBuilder()
+      .maximumSize(100)
+      .refreshAfterWrite(1, TimeUnit.SECONDS)
+      .build(new CacheLoader<String, String>() {
+        @Override
+        public String load(String key) throws Exception {
+          Thread.sleep(1000);
+          System.out.println("miss key:" + key);
+          return key + " world";
+        }
+      });
+
   public MainTest2() {
 
   }
@@ -94,23 +106,42 @@ public class MainTest2 extends AbstractTest {
     String url = "http://bigdata-test.xiaojukeji.com/report/v1/fetch-tool/redirect/v1?batchId=352849&batchOwner=xxx";
     System.out.println(URLEncoder.encode(url, "utf-8"));
 
+    System.out.println(Base64Utils.decodeFromString("CMzZf33qQ+yTBBNueZUHu8O9UXXlYkWhhtohngvE4FqHfEYD1hJjL3cCXDB+8Y+FkIYX5rkRt6k="));
+
   }
 
   @Test
-  public void testURL() throws Exception{
+  public void testGuava() throws Exception {
+    System.out.println(cache.get(null));
+    System.out.println(cache.get("hello"));
+    System.out.println(cache.get("hello"));
+
+    Thread.sleep(3000L);
+    System.out.println(cache.get("hello"));
+
+    for (int i = 0; i < 100; i++) {
+
+      System.out.println(cache.get("fun"));
+    }
+
+    Thread.currentThread().join(10000);
+  }
+
+  @Test
+  public void testURL() throws Exception {
     URL url = new URL("http://www.baidu.com?kw=test");
     System.out.println(url.toString());
   }
 
   @Test
-  public void testUriEncode() throws Exception{
+  public void testUriEncode() throws Exception {
     System.out.println(URLEncoder.encode("http://bigdata-test.xiaojukeji.com/job-center"));
     String a = "http%3A%2F%2Fmis.diditaxi.com.cn%2Fauth%2F%3Fjumpto%3Dhttp%253A%252F%252Fbigdata-test.xiaojukeji.com%252Fdps_index%26app_id%3D204%26callback_index%3D0";
     System.out.println(URLDecoder.decode(a, "utf-8"));
   }
 
   @Test
-  public void testReplace() throws Exception{
+  public void testReplace() throws Exception {
     String a = "hello \n world";
     System.out.println(a);
     System.out.println(a.replaceAll("\n", "\n\n"));
@@ -118,7 +149,7 @@ public class MainTest2 extends AbstractTest {
   }
 
   @Test
-  public void testPattern() throws Exception{
+  public void testPattern() throws Exception {
     Pattern pattern = Pattern.compile("year=(.*)/month=(.*)/day=(.*)");
     System.out.println(pattern.matcher("year=2018/month=216/day=11/hour=111").find());
     System.out.println(pattern.matcher("year=2018/month=216/day=11/hour=111").matches());
