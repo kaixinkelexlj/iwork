@@ -55,12 +55,7 @@ public class GuiceTest {
     @Provides
     @Baba
     public Worker provideWorker() {
-      return new Worker() {
-        @Override
-        public void work() {
-          System.out.println("baba");
-        }
-      };
+      return () -> System.out.println("baba");
     }
 
 
