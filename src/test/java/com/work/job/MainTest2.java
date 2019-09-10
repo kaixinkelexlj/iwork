@@ -9,6 +9,8 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.io.Files;
 import com.work.AbstractTest;
+import com.work.job.bean.Object1;
+import com.work.job.bean.Object2;
 import com.work.job.bean.Son;
 import java.io.BufferedReader;
 import java.io.File;
@@ -51,7 +53,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -95,19 +99,254 @@ public class MainTest2 extends AbstractTest {
   }
 
   public static void main(String[] args) throws Exception {
-    /*System.out.println(Integer.MAX_VALUE);
+    System.out.println("12345".replaceAll("123", ""));
+    System.out.println("".equals(String.join(",", new ArrayList<>(0))));
+  }
 
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTime(new SimpleDateFormat("yyyyMMdd").parse("20181115"));
-    calendar.add(Calendar.MONTH, -11);
-    calendar.add(Calendar.DATE, -15);
-    System.out.println(calendar.getTime());*/
+  @Test
+  public void testFlatMap2() throws Exception {
+    List<Long> ids;
+    Map<String, List<Long>> map = new HashMap<>();
+    for (int i = 0; i < 10; i++) {
+      ids = new ArrayList<>();
+      ids.add(i * 100L);
+      map.put("key==>" + i, ids);
+    }
+    System.out.println(JSON.toJSONString(map));
+    List<Long> list = map.values().stream()
+        .flatMap(i -> i.stream())
+        .collect(Collectors.toList());
+    System.out.println(JSON.toJSONString(StringUtils.join(list, "#")));
+  }
 
-    String url = "http://bigdata-test.xiaojukeji.com/report/v1/fetch-tool/redirect/v1?batchId=352849&batchOwner=xxx";
-    System.out.println(URLEncoder.encode(url, "utf-8"));
+  @Test
+  public void testFormat() throws Exception {
+    String a = "select * from( select a.id as id ,a.gmt_create AS gmtCreate ,a.gmt_modified AS gmtModified ,a.dim_id AS dimId ,a.name AS name ,a.id_column AS idColumn ,a.enums AS enums ,a.creator AS creator ,a.last_update_user AS lastUpdateUser ,a.last_update_time AS lastUpdateTime ,b.`name` as dimName ,b.biz_id as bizId ,b.domain_id as domainId ,b.parent_dim_id as parentDimId from tb_dimension_property a join tb_dimension b on(a.dim_id = b.dimension_id and b.`status` = 1) ) x WHERE bizId={} and domainId=%s and dimName like concat('%', {}, '%') order by dimId ASC limit {}, %%s";
 
-    System.out.println(Base64Utils.decodeFromString("CMzZf33qQ+yTBBNueZUHu8O9UXXlYkWhhtohngvE4FqHfEYD1hJjL3cCXDB+8Y+FkIYX5rkRt6k="));
+    System.out.println(formatString(a, 1, 2, 3, 4, 5));
+  }
 
+  public static String formatString(String format, Object... args) {
+    if (args == null || args.length == 0) {
+      return format;
+    }
+    try {
+      format = format.replaceAll("%s", "{}").replaceAll("%", "%%").replaceAll("\\{}", "%s");
+      return String.format(format, args);
+    } catch (Exception ex) {
+      return format;
+    }
+  }
+
+  @Test
+  public void testCopy() throws Exception {
+    Object1 object1 = new Object1();
+    object1.setName("obj1");
+    object1.setVal("100");
+    Object2 object2 = new Object2();
+    org.springframework.beans.BeanUtils.copyProperties(object1, object2);
+    System.out.println(JSON.toJSONString(object2));
+  }
+
+  @Test
+  public void testFlatMap() throws Exception {
+    List<String> rawUserNames = Arrays.asList("xu,he", "huiqian", "test");
+    List<String> userNames = rawUserNames.stream()
+        .map(rawNames -> rawNames.trim().split(",")).flatMap(Stream::of)
+        .map(org.apache.commons.lang3.StringUtils::trim)
+        .collect(Collectors.toList());
+    userNames.stream().forEach(System.out::println);
+  }
+
+  @Test
+  public void testSimple() throws Exception {
+    System.out.println(new Date(0));
+  }
+
+  @Test
+  public void testBit() throws Exception {
+    System.out.println(Integer.toHexString(Integer.MAX_VALUE));
+    System.out.println(Integer.toHexString(-1));
+    System.out.println(Integer.toHexString(-1 & Integer.MAX_VALUE));
+    AtomicInteger atomicInteger = new AtomicInteger(Integer.MAX_VALUE);
+    System.out.println(atomicInteger.getAndDecrement() & 0x7fffffff);
+    System.out.println(atomicInteger.getAndDecrement() & 0x7fffffff);
+    System.out.println(atomicInteger.getAndDecrement() & 0x7fffffff);
+    System.out.println(atomicInteger.getAndDecrement() & 0x7fffffff);
+    System.out.println(Integer.toHexString(-2));
+    System.out.println(Integer.toBinaryString(-2));
+  }
+
+
+  @Test
+  public void testOnce() throws Exception {
+    System.out.println(String.format("%sd%sh", 100, 100));
+  }
+
+  @Test
+  public void testThrowError() throws Exception {
+    ExecutorService pool = Executors.newFixedThreadPool(4);
+    /*Future<?> future = */
+    pool.execute(() -> {
+      try {
+        System.out.println("task running");
+        throw new NoSuchMethodError("fun");
+      } catch (Exception ex) {
+        System.err.println(ex);
+      } finally {
+        System.out.println("task finally");
+      }
+      System.out.println("done");
+    });
+
+    Future<?> future = pool.submit(() -> {
+      try {
+        System.out.println("task running");
+        throw new NoSuchMethodError("fun");
+      } catch (Exception ex) {
+        System.err.println(ex);
+      } finally {
+        System.out.println("task finally");
+      }
+      System.out.println("done");
+    });
+
+    System.out
+        .println(String.format("done:%s, canceled:%s", future.isDone(), future.isCancelled()));
+    try {
+      future.get();
+    } finally {
+      System.out
+          .println(String.format("done:%s, canceled:%s", future.isDone(), future.isCancelled()));
+    }
+
+    Thread.sleep(1000);
+  }
+
+  @Test
+  public void testJsonNull() throws Exception {
+    System.out.println(JSON.toJSONString(null));
+    System.out.println("null".equals(JSON.toJSONString(null)));
+  }
+
+  @Test
+  public void testReplacement() throws Exception {
+    Pattern pattern = Pattern.compile("\\$\\{.+?\\}");
+
+    String a = "${xx}, this is ${ xxx }, hi ${x}, nice '${hh}', \"${xx}\"";
+    String b = pattern.matcher(a).replaceAll("''").replaceAll("''''", "''");
+    System.out.println(b);
+
+    String c = "${xx}";
+    System.out.println(a.replace(c, "!!"));
+    System.out.println(StringUtils.replace(a, c, "!!"));
+
+    System.out.println("this is ${date}".replaceAll("\\$\\{date}", "1"));
+    System.out
+        .println("this is '' '${date}'".replaceAll("\\$\\{date}", "' 1 '").replaceAll("''", "'"));
+
+    String d = "this is '','''','date',''xxx'',''yyyy''";
+    System.out.println(d.replaceAll("''(.*?)''", "##\100##"));
+    System.out.println(d.replaceAll("''(\\w+?)''", "'\1'"));
+
+    Pattern pattern1 = Pattern.compile("['\"]{2,}(.*?)['\"]{2,}");
+
+    Matcher matcher = pattern1.matcher(d);
+    while (matcher.find()) {
+      d = StringUtils.replace(d, matcher.group(0), "'" + matcher.group(1) + "'");
+    }
+    System.out.println(d);
+
+    String e = "this is \"\",\"\"\"\",\"date\",\"\"xxx\"\",''yyyy''";
+    System.out.println(e);
+    matcher = pattern1.matcher(e);
+    while (matcher.find()) {
+      e = StringUtils.replace(e, matcher.group(0), "\"" + matcher.group(1) + "\"");
+    }
+    System.out.println(e);
+
+    Pattern pattern2 = Pattern.compile("''(.*?)''");
+
+    String f = " this is '''' ''xxx''  ";
+    String g = " this is \"''\" \"'xx'\" ";
+    matcher = pattern2.matcher(f);
+    while (matcher.find()) {
+      f = StringUtils.replace(f, matcher.group(0), "\"" + matcher.group(1) + "\"");
+    }
+    System.out.println(f);
+
+    matcher = pattern2.matcher(g);
+    while (matcher.find()) {
+      g = StringUtils.replace(g, matcher.group(0), "\"" + matcher.group(1) + "\"");
+    }
+    System.out.println(g);
+
+  }
+
+  @Test
+  public void testStringRp() throws Exception {
+    String a = "xulujun__test@!_xx";
+    System.out.println(a.replaceAll("[^a-zA-Z0-9]", "#"));
+    Pattern pattern = Pattern.compile("[@]");
+    System.out.println(pattern.matcher(a).replaceAll("#"));
+  }
+
+  @Test
+  public void testDengyu() throws Exception {
+    Integer a = 10;
+    Integer b = new Integer(10);
+    System.out.println(a == b);
+    b = new Integer(10);
+    System.out.println(a == b);
+    System.out.println(a == 10);
+    System.out.println(b == 10);
+
+  }
+
+  @Test
+  public void testByteConvert() throws Exception {
+    System.out.println(Integer.toHexString(1));
+    System.out.println(Arrays.toString("1".getBytes()));
+    System.out.println(bytesToHexString("1".getBytes()));
+    System.out.println(
+        Arrays.toString(com.google.common.primitives.Ints.toByteArray(Integer.MAX_VALUE - 1)));
+    /*byte[] arr = hexStringToByte("1111");
+    System.out.println(ByteBuffer.wrap(arr).getInt());*/
+    System.out.println(Integer.toHexString(255));
+    byte[] arr = hexStringToByte("ff");
+
+    System.out.println(Integer.parseInt("ff", 16));
+
+  }
+
+  public static byte[] hexStringToByte(String hex) {
+
+    int len = (hex.length() / 2);
+    byte[] result = new byte[len];
+    char[] achar = hex.toCharArray();
+    for (int i = 0; i < len; i++) {
+      int pos = i * 2;
+      result[i] = (byte) (toByte(achar[pos]) << 4 | toByte(achar[pos + 1]));
+    }
+    return result;
+  }
+
+  private static byte toByte(char c) {
+    return (byte) "0123456789ABCDEF".indexOf(c);
+  }
+
+  public static final String bytesToHexString(byte[] bArray) {
+
+    StringBuffer sb = new StringBuffer(bArray.length);
+    String sTemp;
+    for (int i = 0; i < bArray.length; i++) {
+      sTemp = Integer.toHexString(0xFF & bArray[i]);
+      if (sTemp.length() < 2) {
+        sb.append(0);
+      }
+      sb.append(sTemp.toUpperCase());
+    }
+    return sb.toString();
   }
 
   @Test

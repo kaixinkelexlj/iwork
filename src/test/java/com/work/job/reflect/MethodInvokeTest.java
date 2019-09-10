@@ -8,6 +8,9 @@
 package com.work.job.reflect;
 
 import java.lang.reflect.Method;
+import net.sf.cglib.reflect.FastClass;
+import net.sf.cglib.reflect.FastMethod;
+import org.junit.Test;
 
 /**
  * @author lujun.xlj
@@ -16,6 +19,7 @@ import java.lang.reflect.Method;
 public class MethodInvokeTest {
 
   public static void main(String[] args) throws Exception {
+
     MethodFun target = new MethodFun();
 
     //1次
@@ -44,10 +48,35 @@ public class MethodInvokeTest {
 
   }
 
+  @Test
+  public void testFastMethod() throws Exception {
+    FastClass fastClass = FastClass.create(MethodFun.class);
+    FastClass fastClass1 = FastClass.create(MethodFun.class);
+    System.out.println(fastClass == fastClass1);
+    FastMethod fastMethod = fastClass.getMethod("say", new Class[]{String.class, Object[].class});
+    fastMethod.invoke(new MethodFun(), new Object[]{"hello %s", new Object[]{"xlj"}});
+
+    FastMethod fastMethodStaic = fastClass
+        .getMethod("sayStatic", new Class[]{String.class, Object[].class});
+    fastMethodStaic.invoke(null, new Object[]{"hello %s", new Object[]{"xlj"}});
+  }
+
   public static class MethodFun {
 
     private void say() {
       System.out.println("I am stealer");
+    }
+
+    public void say(String msg) {
+      System.out.println(msg);
+    }
+
+    public void say(String msg, Object... args) {
+      System.out.println(String.format(msg, args));
+    }
+
+    public static void sayStatic(String msg, Object... args) {
+      System.out.println(String.format(msg, args));
     }
 
   }
