@@ -104,6 +104,16 @@ public class MainTest2 extends AbstractTest {
   }
 
   @Test
+  public void testNumberFormat() throws Exception {
+    NumberFormat format = NumberFormat.getPercentInstance();
+    format.setMaximumFractionDigits(1);
+    format.setMinimumFractionDigits(1);
+    System.out.println(format.parse("11.11111%"));
+    System.out.println(format.format(0.1126F));
+    System.out.println(format.format(0.11F));
+  }
+
+  @Test
   public void testFlatMap2() throws Exception {
     List<Long> ids;
     Map<String, List<Long>> map = new HashMap<>();
