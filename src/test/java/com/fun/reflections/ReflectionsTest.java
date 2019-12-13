@@ -19,12 +19,24 @@ import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ClasspathHelper;
 
 /**
  * @author xulujun 2019/10/09
  */
 public class ReflectionsTest {
 
+
+  @Test
+  public void testClasspath() throws Exception {
+    System.out.println(JSON.toJSONString(
+        this.getClass().getClassLoader().getResources("com/fun/reflections/testmodel")));
+    System.out.println(
+        this.getClass().getClassLoader().getResources("com/fun/reflections/testmodel").nextElement()
+            .toExternalForm());
+    System.out
+        .println(JSON.toJSONString(ClasspathHelper.forPackage("com.fun.reflections.testmodel")));
+  }
 
   @SuppressWarnings("unchecked")
   @Test

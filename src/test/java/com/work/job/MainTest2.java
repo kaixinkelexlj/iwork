@@ -99,8 +99,18 @@ public class MainTest2 extends AbstractTest {
   }
 
   public static void main(String[] args) throws Exception {
-    System.out.println("12345".replaceAll("123", ""));
-    System.out.println("".equals(String.join(",", new ArrayList<>(0))));
+    asyncTest();
+  }
+
+  public static void asyncTest() throws Exception {
+    System.out.println("" + null);
+  }
+
+  @Test
+  public void testRegexp() throws Exception{
+    Pattern pattern = Pattern.compile("(job_id=|task_unfinished_)");
+    // job_id=11834
+    // task_unfinished_11841
   }
 
   @Test
