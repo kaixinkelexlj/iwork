@@ -15,12 +15,12 @@ public class QuickSort {
       return;
     }
     int pivot = (start + end) >> 1;
-    sepByPivot(start, end, pivot, dataList);
+    pivot = sepByPivot(start, end, pivot, dataList);
     sort(start, pivot - 1, dataList);
     sort(pivot + 1, end, dataList);
   }
 
-  private static void sepByPivot(int start, int end, int pivot, List<Integer> dataList) {
+  private static int sepByPivot(int start, int end, int pivot, List<Integer> dataList) {
     int cmpValue = dataList.get(pivot);
     dataList.set(pivot, dataList.get(end));
     while (start != end) {
@@ -40,6 +40,7 @@ public class QuickSort {
       }
     }
     dataList.set(start, cmpValue);
+    return start;
   }
 
   @Test
