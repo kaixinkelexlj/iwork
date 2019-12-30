@@ -99,7 +99,8 @@ public class MainTest2 extends AbstractTest {
   }
 
   public static void main(String[] args) throws Exception {
-    asyncTest();
+    Integer[] arr = new Integer[10];
+    System.out.println(arr[3]);
   }
 
   public static void asyncTest() throws Exception {
@@ -107,7 +108,7 @@ public class MainTest2 extends AbstractTest {
   }
 
   @Test
-  public void testRegexp() throws Exception{
+  public void testRegexp() throws Exception {
     Pattern pattern = Pattern.compile("(job_id=|task_unfinished_)");
     // job_id=11834
     // task_unfinished_11841
