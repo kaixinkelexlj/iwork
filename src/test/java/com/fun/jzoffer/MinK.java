@@ -35,12 +35,12 @@ public class MinK {
     if (list.size() <= k) {
       return new ArrayList<>(list);
     }
-    List<Integer> heap = list.subList(0, k);
+    List<Integer> heap = new ArrayList<>(list.subList(0, k));
     buildMaxHeap(heap); // 构建大顶堆
     Integer val;
     for (int i = k; i < list.size(); i++) {
       val = list.get(i);
-      if (heap.get(0) < val) {
+      if (heap.get(0) > val) {
         heap.set(0, val);
         adjustHeap(heap, 0, k);
       }
@@ -52,7 +52,7 @@ public class MinK {
     int child;
     for (; i <= length / 2 - 1; ) {
       child = 2 * i + 1;
-      if (child + 1 <= length && heap.get(child + 1) > heap.get(child)) {
+      if (child + 1 < length && heap.get(child + 1) > heap.get(child)) {
         child += 1;
       }
       if (heap.get(i) < heap.get(child)) {
