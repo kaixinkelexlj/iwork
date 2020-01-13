@@ -1,6 +1,8 @@
 package com.fun.jzoffer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
@@ -13,6 +15,9 @@ import org.junit.Test;
  *
  * https://www.cnblogs.com/sxkgeek/p/9662491.html(代码有错误，代码里有调整)
  * https://blog.csdn.net/simatongming/article/details/72307280（正确）
+ * https://www.cnblogs.com/chengxiao/p/6129630.html（堆排序）
+ *
+ * length / 2 - 1 很关键
  *
  */
 public class MaxHeap {
@@ -26,7 +31,7 @@ public class MaxHeap {
     if (heap == null || heap.size() == 0) {
       return;
     }
-    for (int i = (heap.size() - 1) >> 1; i >= 0; i--) {
+    for (int i = heap.size() / 2 - 1; i >= 0; i--) {
       adjustHeap(heap, i, heap.size());
       System.out.println(StringUtils.join(heap, ","));
     }
@@ -35,7 +40,8 @@ public class MaxHeap {
   /* 把根节点跟最后一个元素交换位置，调整剩下的n-1个节点，即可排好序 */
   /* 对一个大顶堆排序 */
   public void heapSort(List<Integer> list) {
-    for (int i = list.size() - 1; i >= 0; i--) {
+    buildHeap(list);
+    for (int i = list.size() - 1; i > 0; i--) {
       swap(list, 0, i);
       adjustHeap(list, 0, i);
     }
@@ -43,7 +49,7 @@ public class MaxHeap {
 
   private void adjustHeap(List<Integer> heap, int i, int length) {
     int child;
-    for (; i <= (length - 1) >> 1; ) {
+    for (; i <= length / 2 - 1; ) {
       child = 2 * i + 1;
       // 左右子节点比较大小
       if (child + 1 <= length - 1 && heap.get(child + 1) > heap.get(child)) {
@@ -70,14 +76,26 @@ public class MaxHeap {
 
   @Test
   public void test() throws Exception {
-
+    // 大顶堆 93,72,48,53,45,30,18,36,15,35
     List<Integer> list = Arrays.asList(45, 36, 18, 53, 72, 30, 48, 93, 15, 35);
-    buildHeap(list);
+    List<Integer> listCmp = new ArrayList<>(list);
     System.out.println(StringUtils.join(list, ","));
     heapSort(list);
-    System.out.println("sorted");
+    System.out.println("=== sorted == ");
     System.out.println(StringUtils.join(list, ","));
+    Collections.sort(listCmp);
+    System.out.println(StringUtils.join(listCmp, ","));
+    // 15,18,30,36,45,48,53,72,93
 
+
+    list = Arrays.asList(45, 36, 18, 53, 72, 30, 48, 93, 35);
+    listCmp = new ArrayList<>(list);
+    System.out.println(StringUtils.join(list, ","));
+    heapSort(list);
+    System.out.println("=== sorted == ");
+    System.out.println(StringUtils.join(list, ","));
+    Collections.sort(listCmp);
+    System.out.println(StringUtils.join(listCmp, ","));
   }
 
 }
