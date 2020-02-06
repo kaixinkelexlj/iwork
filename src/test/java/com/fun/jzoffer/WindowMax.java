@@ -74,7 +74,7 @@ public class WindowMax {
 
     public void add(T item) {
       while (list.size() >= maxLength) {
-        popValue();
+        removeOld();
       }
       pushValue(item);
     }
@@ -95,7 +95,7 @@ public class WindowMax {
       }
     }
 
-    private void popValue() {
+    private void removeOld() {
       T val = this.list.pollFirst();
       if (val.equals(stack.peek())) {
         stack.pop();
