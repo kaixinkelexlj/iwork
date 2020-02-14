@@ -21,7 +21,7 @@ public class StackReverse {
     stack = new Stack<>();
     IntStream.rangeClosed(1, 5).forEach(stack::push);
     //stack = reverseStack(stack);
-    reverseStack2(stack);
+    reverseStackRecursive(stack);
     while (!stack.isEmpty()) {
       System.out.println(stack.pop());
     }
