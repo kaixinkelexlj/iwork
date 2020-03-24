@@ -3,7 +3,6 @@ package com.fun.bigdata.hive;
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.ast.statement.SQLExprTableSource;
-import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
 import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
 import com.alibaba.druid.sql.dialect.hive.visitor.HiveASTVisitorAdapter;
 import com.alibaba.druid.util.JdbcConstants;
@@ -42,11 +41,11 @@ public class HiveParserTest extends AbstractTest {
   public void testColParse() throws Exception {
     String sql = "select * from(select sum(a), o as c2, test c3 from tb)";
     List<SQLStatement> list = SQLUtils.parseStatements(sql, JdbcConstants.HIVE);
-    SQLSelectStatement statement = (SQLSelectStatement)list.get(0);
+    SQLSelectStatement statement = (SQLSelectStatement) list.get(0);
     statement.getSelect().getQueryBlock().getSelectList()
         .stream().forEach(col -> {
-          System.out.println(String.format("expr %s, alias %s", col.getExpr(), col.getAlias()));
-        });
+      System.out.println(String.format("expr %s, alias %s", col.getExpr(), col.getAlias()));
+    });
   }
 
 }
