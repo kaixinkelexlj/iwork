@@ -2,7 +2,9 @@ package com.work.job;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fun.codec.TestRSA;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -103,8 +105,35 @@ public class MainTest2 extends AbstractTest {
     System.out.println(arr[3]);
   }
 
+  @Test
+  public void testConvertNumber() throws Exception{
+    System.out.println('0' - '1');
+    System.out.println((int)'0');
+    System.out.println((int)'1');
+  }
+
   public static void asyncTest() throws Exception {
     System.out.println("" + null);
+  }
+
+  @Test
+  public void testJackson() throws Exception{
+    ObjectMapper objectMapper = new ObjectMapper();
+    JsonNode jsonNode = objectMapper.readTree("[1,2,3]");
+    System.out.println(jsonNode.getClass().getName());
+    for(JsonNode a : (ArrayNode)jsonNode){
+      System.out.println(a.asInt());
+    }
+  }
+
+  @Test
+  public void testStringUtils() throws Exception{
+    String a = "1/2/3/4/";
+    System.out.println(StringUtils.stripEnd(a, "/"));
+    System.out.println(StringUtils.removeEnd(a, "/"));
+    String b = "1/2/3/4";
+    System.out.println(StringUtils.stripEnd(b, "/"));
+    System.out.println(StringUtils.removeEnd(b, "/"));
   }
 
   @Test
