@@ -101,8 +101,13 @@ public class MainTest2 extends AbstractTest {
   }
 
   public static void main(String[] args) throws Exception {
-    Integer[] arr = new Integer[10];
-    System.out.println(arr[3]);
+    System.out.println(Integer.toBinaryString(-1));
+    System.out.println();
+  }
+
+  @Test
+  public void testInteger() throws Exception{
+    System.out.println(Integer.numberOfLeadingZeros(8));
   }
 
   @Test
