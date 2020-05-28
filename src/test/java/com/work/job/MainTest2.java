@@ -101,8 +101,27 @@ public class MainTest2 extends AbstractTest {
   }
 
   public static void main(String[] args) throws Exception {
-    System.out.println(Integer.toBinaryString(-1));
-    System.out.println();
+    String a = (String)new HashMap<String, Object>().get("123");
+    System.out.println(a);
+  }
+
+  @Test
+  public void testTimeUnit() throws Exception{
+    System.out.println(TimeUnit.MILLISECONDS.toSeconds(1000));
+  }
+
+  @Test
+  public void testConstantPool() throws Exception{
+    Integer i1 = 33;
+    Integer i2 = 33;
+    System.out.println(i1 == i2);// 输出true
+    Integer i11 = 333;
+    Integer i22 = 333;
+    System.out.println(i11 == i22);// 输出false
+    Double i3 = 1.2;
+    Double i4 = 1.2;
+    System.out.println(i3 == i4);// 输出false
+
   }
 
   @Test
