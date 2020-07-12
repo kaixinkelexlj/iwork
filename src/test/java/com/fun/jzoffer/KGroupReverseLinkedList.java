@@ -134,14 +134,13 @@ public class KGroupReverseLinkedList {
     ListNode2 prev = tail.next;
     ListNode2 tmp;
     // 1 -> 2 -> 3
-    while (current != tail) {
+    while (prev != tail) {
       tmp = current.next;
       current.next = prev;
       prev = current;
       current = tmp;
     }
-    current.next = prev;
-    return new HeadAndTail(current, head);
+    return new HeadAndTail(tail, head);
   }
 
   private class HeadAndTail {
