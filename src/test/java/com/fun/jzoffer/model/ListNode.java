@@ -7,8 +7,8 @@ import com.google.common.base.Preconditions;
  */
 public class ListNode<T> {
 
-  private T val;
-  private ListNode<T> next;
+  protected T val;
+  protected ListNode<T> next;
 
   public static <T> ListNode<T> of(T... values) {
     Preconditions.checkArgument(values != null && values.length > 0);

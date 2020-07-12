@@ -1,6 +1,6 @@
 package com.fun.jzoffer;
 
-import com.fun.jzoffer.model.ListNode;
+import com.fun.jzoffer.model.IntListNode;
 import org.junit.Test;
 
 /**
@@ -10,25 +10,28 @@ public class ReverseLinkList {
 
 
   @Test
+  @SuppressWarnings("unchecked")
   public void test() throws Exception {
-    ListNode head = new ListNode(1);
-    head.next(new ListNode(2))
-        .next(new ListNode(3))
-        .next(new ListNode(4));
-    printNodeList(head);
-    printNodeList(reverse(head));
+    IntListNode head = new IntListNode(1);
+    head.next(new IntListNode(2))
+        .next(new IntListNode(3))
+        .next(new IntListNode(4));
+    System.out.println(head.toString());
+    // printNodeList(reverse(head));
+    System.out.println(reverseRecursive(head).toString());
   }
 
-  private ListNode reverse(ListNode head) {
+  @SuppressWarnings("unchecked")
+  private IntListNode reverse(IntListNode head) {
 
     if (head == null || !head.hasNext()) {
       return head;
     }
-    ListNode current = head;
-    ListNode prev = null;
-    ListNode temp;
+    IntListNode current = head;
+    IntListNode prev = null;
+    IntListNode temp;
     while (current != null) {
-      temp = current.next();
+      temp = (IntListNode) current.next();
       current.next(prev);
       prev = current;
       current = temp;
@@ -37,13 +40,25 @@ public class ReverseLinkList {
 
   }
 
-  private void printNodeList(ListNode head) {
+  @SuppressWarnings("unchecked")
+  private IntListNode reverseRecursive(IntListNode node) {
+    if (node == null || node.next() == null) {
+      return node;
+    }
+    IntListNode head = reverseRecursive((IntListNode)node.next());
+    node.next().next(node);
+    node.next(null);
+    return head;
+  }
+
+
+  private void printNodeList(IntListNode head) {
     if (head == null) {
       return;
     }
-    for (ListNode node = head; node != null; ) {
+    for (IntListNode node = head; node != null; ) {
       System.out.println(node.getVal());
-      node = node.next();
+      node = (IntListNode)node.next();
     }
 
   }
