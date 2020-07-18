@@ -92,8 +92,8 @@ public class MiddleNumInSortedArrays {
 
   @Test
   public void test() throws Exception {
-    Assert.assertTrue(findMedianSortedArrays(new int[]{1, 3}, new int[]{2}) == 2.0);
-    Assert.assertTrue(findMedianSortedArrays(new int[]{1, 2}, new int[]{3, 4}) == 2.5);
+    Assert.assertEquals(2.0, findMedianSortedArrays(new int[]{1, 3}, new int[]{2}), 0.0);
+    Assert.assertEquals(2.5, findMedianSortedArrays(new int[]{1, 2}, new int[]{3, 4}), 0.0);
   }
 
 }
