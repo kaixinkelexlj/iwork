@@ -54,6 +54,7 @@ public class SubSequenceSum {
    * 还有一种更好的解法，只需要O（N）的时间。因为最大连续子序列和只可能是以位置0～n-1中某个位置结尾。当遍历到第i个元素时，判断在它前面的连续子序列和是否大于0，如果大于0，则以位置i结尾的最大连续子序列和为元素i和前面的连续子序列和相加；否则，则以位置i结尾的最大连续子序列和为元素i
    * result[i] = max(result[i-1], 0) + data[i]
    */
+  // 推荐使用
   public static Integer calMaxDynamicProgram(List<Integer> dataList) {
     if (dataList == null || dataList.size() == 0) {
       throw new IllegalArgumentException("invalid dataList");
