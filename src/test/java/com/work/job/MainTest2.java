@@ -101,17 +101,25 @@ public class MainTest2 extends AbstractTest {
   }
 
   public static void main(String[] args) throws Exception {
-    String a = (String)new HashMap<String, Object>().get("123");
+    String a = (String) new HashMap<String, Object>().get("123");
     System.out.println(a);
   }
 
   @Test
-  public void testTimeUnit() throws Exception{
+  public void testPrintStringList() throws Exception {
+
+    System.out.println(Stream.of(1, 2, 3)
+        .map(String::valueOf)
+        .collect(Collectors.joining(",")));
+  }
+
+  @Test
+  public void testTimeUnit() throws Exception {
     System.out.println(TimeUnit.MILLISECONDS.toSeconds(1000));
   }
 
   @Test
-  public void testConstantPool() throws Exception{
+  public void testConstantPool() throws Exception {
     Integer i1 = 33;
     Integer i2 = 33;
     System.out.println(i1 == i2);// 输出true
@@ -125,15 +133,15 @@ public class MainTest2 extends AbstractTest {
   }
 
   @Test
-  public void testInteger() throws Exception{
+  public void testInteger() throws Exception {
     System.out.println(Integer.numberOfLeadingZeros(8));
   }
 
   @Test
-  public void testConvertNumber() throws Exception{
+  public void testConvertNumber() throws Exception {
     System.out.println('0' - '1');
-    System.out.println((int)'0');
-    System.out.println((int)'1');
+    System.out.println((int) '0');
+    System.out.println((int) '1');
   }
 
   public static void asyncTest() throws Exception {
@@ -141,17 +149,17 @@ public class MainTest2 extends AbstractTest {
   }
 
   @Test
-  public void testJackson() throws Exception{
+  public void testJackson() throws Exception {
     ObjectMapper objectMapper = new ObjectMapper();
     JsonNode jsonNode = objectMapper.readTree("[1,2,3]");
     System.out.println(jsonNode.getClass().getName());
-    for(JsonNode a : (ArrayNode)jsonNode){
+    for (JsonNode a : (ArrayNode) jsonNode) {
       System.out.println(a.asInt());
     }
   }
 
   @Test
-  public void testStringUtils() throws Exception{
+  public void testStringUtils() throws Exception {
     String a = "1/2/3/4/";
     System.out.println(StringUtils.stripEnd(a, "/"));
     System.out.println(StringUtils.removeEnd(a, "/"));

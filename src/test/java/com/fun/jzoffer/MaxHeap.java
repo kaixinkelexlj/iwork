@@ -22,11 +22,21 @@ import org.junit.Test;
  */
 public class MaxHeap {
 
+  /* 把根节点跟最后一个元素交换位置，调整剩下的n-1个节点，即可排好序 */
+  /* 对一个大顶堆排序 */
+  public void heapSort(List<Integer> list) {
+    buildMaxTopHeap(list);
+    for (int i = list.size() - 1; i > 0; i--) {
+      swap(list, 0, i);
+      adjustHeap(list, 0, i);
+    }
+  }
+
   /**
    * 构建大顶堆
    * @param heap
    */
-  public void buildHeap(List<Integer> heap) {
+  private void buildMaxTopHeap(List<Integer> heap) {
 
     if (heap == null || heap.size() == 0) {
       return;
@@ -37,19 +47,9 @@ public class MaxHeap {
     }
   }
 
-  /* 把根节点跟最后一个元素交换位置，调整剩下的n-1个节点，即可排好序 */
-  /* 对一个大顶堆排序 */
-  public void heapSort(List<Integer> list) {
-    buildHeap(list);
-    for (int i = list.size() - 1; i > 0; i--) {
-      swap(list, 0, i);
-      adjustHeap(list, 0, i);
-    }
-  }
-
   private void adjustHeap(List<Integer> heap, int i, int length) {
     int child;
-    for (; i <= length / 2 - 1; ) {
+    for (; i < length / 2; ) {
       child = 2 * i + 1;
       // 左右子节点比较大小
       if (child + 1 <= length - 1 && heap.get(child + 1) > heap.get(child)) {

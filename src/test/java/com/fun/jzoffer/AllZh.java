@@ -30,10 +30,13 @@ public class AllZh {
 
   @Test
   public void test() throws Exception {
-    List<List<Integer>> result = new Solution().permute(new int[]{1, 2, 3});
-    result.forEach(list -> System.out.println(StringUtils.join(list, ",")));
-    //new Solution2().permute(new int[]{1, 2, 3});
+    List<List<Integer>> result = null;
+    //result = new Solution().permute(new int[]{1, 2, 3});
 
+    result = new Solution3().permute(new int[]{1, 2, 3});
+    //result = new Solution3().permute(new int[]{1, 2, 3});
+
+    result.forEach(list -> System.out.println(StringUtils.join(list, ",")));
   }
 
 
@@ -74,35 +77,9 @@ public class AllZh {
 
   class Solution3 {
 
+    //fixme lujun.xlj TODO
     public List<List<Integer>> permute(int[] nums) {
-      List<List<Integer>> result = new ArrayList<>();
-      doWork(nums, 0, new Integer[nums.length], result);
-      return result;
-    }
-
-    private void doWork(int[] nums, int pos, Integer[] store,
-        List<List<Integer>> result) {
-      if (pos == nums.length) {
-        result.add(new ArrayList<>(Arrays.asList(store)));
-        return;
-      }
-      for (int num : nums) {
-        if (contains(store, pos, num)) {
-          continue;
-        }
-        store[pos] = num;
-        doWork(nums, pos + 1, store, result);
-      }
-
-    }
-
-    private boolean contains(Integer[] arr, int endIndex, int target) {
-      for (int j = 0; j < endIndex; j++) {
-        if (arr[j] != null && arr[j] == target) {
-          return true;
-        }
-      }
-      return false;
+      return null;
     }
 
   }

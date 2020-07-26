@@ -25,4 +25,12 @@ public class JzOffer {
     testAndPrintout(condition.get(), obj);
   }
 
+  public void sleepQuietly(long mills) {
+    try {
+      Thread.sleep(mills);
+    } catch (Exception ignore) {
+      //
+    }
+  }
+
 }
