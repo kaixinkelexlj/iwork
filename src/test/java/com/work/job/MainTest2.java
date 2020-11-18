@@ -40,6 +40,8 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -101,8 +103,79 @@ public class MainTest2 extends AbstractTest {
   }
 
   public static void main(String[] args) throws Exception {
-    String a = (String) new HashMap<String, Object>().get("123");
-    System.out.println(a);
+    System.out.println(org.apache.commons.lang3.StringUtils.join(new ArrayList(0), ","));
+  }
+
+  @Test
+  public void testProcess() throws Exception {
+    Process process = Runtime.getRuntime().exec("sleep 1");
+    //Process process = Runtime.getRuntime().exec("sleep 1");
+    boolean ok = process.waitFor(5, TimeUnit.SECONDS);
+    System.out.println(ok);
+    if (!ok) {
+      System.out.println("destroyForcibly");
+      Process killProcess = process.destroyForcibly();
+      //killProcess.waitFor();
+    }
+    System.out.println(process.exitValue());
+  }
+
+  @Test
+  public void testDatetimeFormatter() throws Exception {
+    System.out.println(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+        .withZone(ZoneId.systemDefault())
+        .format(new Date().toInstant()));
+  }
+
+  @Test
+  public void testDouble() throws Exception {
+    int a = 1213131;
+    double b = a / 3600.0d;
+    System.out.println(String.format("%s修改%.2f", "xxx", b));
+    //System.out.println(String.format("%.2f",1));
+    System.out.println(String.format("修改%.2f", 100.0));
+  }
+
+
+  @Test
+  public void testFunction() throws Exception {
+    String a = "a\nb";
+    System.out.println(a.replaceAll("\n", "#"));
+  }
+
+
+  @Test
+  public void testZero() throws Exception {
+    String a = "trancatTailZero";
+    System.out.println(trancatTailZero("10.000001"));
+    System.out.println(trancatTailZero("10.00000"));
+    System.out.println(trancatTailZero("1010001"));
+  }
+
+  private static String trancatTailZero(String value) {
+    int zeroIndex = -1;
+    int i = 0;
+    while (i < value.length()) {
+      if (value.charAt(i) == '.') {
+        zeroIndex = i;
+        break;
+      }
+      i++;
+    }
+    if (zeroIndex == value.length() - 1) {
+      return value.substring(0, zeroIndex);
+    }
+    if (zeroIndex >= 0) {
+      for (i = zeroIndex + 1; i < value.length(); i++) {
+        //确保'.'后面的都是'0'
+        if (value.charAt(i) != '0') {
+          return value;
+        }
+      }
+      //前面找到不是0的话会直接退出，所以这里可以安全选出要的数字
+      return value.substring(0, zeroIndex);
+    }
+    return value;
   }
 
   @Test

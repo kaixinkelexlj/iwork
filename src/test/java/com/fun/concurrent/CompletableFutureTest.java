@@ -1,9 +1,15 @@
 package com.fun.concurrent;
 
 import com.fun.jzoffer.JzOffer;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import org.apache.commons.lang.math.RandomUtils;
 import org.junit.Test;
 
@@ -138,6 +144,28 @@ public class CompletableFutureTest extends JzOffer {
       return "cf2";
     }), (s1, s2) -> s1 + "," + s2);
     System.out.println(cf.join());
+  }
+
+  @Test
+  public void test() throws Exception{
+    ExecutorService pool = Executors.newFixedThreadPool(5);
+    List<CompletableFuture<Integer>> futureList = IntStream.rangeClosed(1, 100)
+        .boxed()
+        .map(i -> CompletableFuture.supplyAsync(() -> {
+          try {
+            int val = new Random().nextInt(100);
+            Thread.sleep(val);
+            System.out.println(Thread.currentThread().getName());
+            return val;
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+          return 0;
+        }, pool))
+        .collect(Collectors.toList());
+    CompletableFuture.allOf(futureList.toArray(new CompletableFuture[0])).join();
+    System.out.println("done");
+    futureList.forEach(f -> System.out.println(f.getNow(-1)));
   }
 
 

@@ -77,7 +77,6 @@ public class AllZh {
 
   class Solution3 {
 
-    //fixme lujun.xlj TODO
     public List<List<Integer>> permute(int[] nums) {
       return null;
     }
