@@ -4,43 +4,48 @@ import com.alibaba.fastjson.JSON;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.Test;
 
 /**
+ * 没有重复数字的数组，全排列.
  * @author xulujun 2021/01/27.
  */
 public class AllZh2 {
 
   @Test
   public void test() throws Exception {
-    //Integer[] nums = new Integer[]{1, 2, 3};
-    //Integer[] nums = new Integer[]{1, 2};
-    Integer[] nums = new Integer[]{1, 2, 3, 4, 5};
+    int[] nums = new int[]{1, 2, 3};
     List<List<Integer>> zhList = new Solution().runTask(nums);
     System.out.println(JSON.toJSONString(zhList));
   }
 
   private class Solution {
 
-    public List<List<Integer>> runTask(Integer[] nums) {
+    public List<List<Integer>> runTask(int[] nums) {
       if (nums == null || nums.length == 0) {
         return new ArrayList<>(0);
       }
-      List<Integer> sourceList = Arrays.asList(nums);
+      List<Integer> seed = Arrays.stream(nums).boxed().collect(Collectors.toList());
       List<List<Integer>> resultList = new ArrayList<>();
-      doRunTask(nums.length, 0, sourceList, resultList);
+      doRunTask(nums.length, 0, seed, resultList);
       return resultList;
     }
 
-    private void doRunTask(int length, int first, List<Integer> zh,
-        List<List<Integer>> zhList) {
+    private void doRunTask(int length, int first, List<Integer> seed,
+        List<List<Integer>> resultList) {
       if (first == length) {
-        zhList.add(new ArrayList<>(zh));
+        resultList.add(new ArrayList<>(seed));
+        return;
       }
       for (int i = first; i < length; i++) {
-        swap(zh, i, first);
-        doRunTask(length, first + 1, zh, zhList);
-        swap(zh, i, first);
+        if (i != first) {
+          swap(seed, i, first);
+        }
+        doRunTask(length, first + 1, seed, resultList);
+        if (i != first) {
+          swap(seed, i, first);
+        }
       }
     }
 
