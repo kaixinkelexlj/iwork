@@ -103,7 +103,95 @@ public class MainTest2 extends AbstractTest {
   }
 
   public static void main(String[] args) throws Exception {
-    System.out.println(org.apache.commons.lang3.StringUtils.join(new ArrayList(0), ","));
+    /*System.out.println("\u6210\u90FD");
+    System.out.println("徐");*/
+    System.out.println((double)System.currentTimeMillis());
+  }
+
+  @Test
+  public void testretainAll() throws Exception {
+    Map<String, Integer> map = new HashMap<>();
+    map.put("1", 1);
+    map.put("2", 2);
+    map.put("3", 3);
+    map.keySet().retainAll(Arrays.asList("1", "2"));
+    System.out.println(JSON.toJSONString(map));
+  }
+
+  @Test
+  public void testMapRef() throws Exception {
+
+    Map<String, ParentCls> map = new HashMap<>();
+    ParentCls obj = new SonCls();
+    map.put("x", obj);
+    ParentCls obj2 = map.get("x");
+    SonCls son = (SonCls) obj2;
+    son.setStr("xxx");
+    System.out.println(JSON.toJSONString(obj2));
+
+  }
+
+  @Test
+  public void testCmp() throws Exception {
+    List<?> list = Stream.of(new Stat(1, 2), new Stat(2, 2), new Stat(2, 3))
+        .sorted(Comparator.comparing(Stat::getLimit1).thenComparing((stat) -> {
+          return 0 - stat.getLimit2();
+        })).collect(Collectors.toList());
+    System.out.println(JSON.toJSONString(list));
+  }
+
+  public static class ParentCls {
+
+    private String name;
+
+    public String getName() {
+      return name;
+    }
+
+    public void setName(String name) {
+      this.name = name;
+    }
+
+  }
+
+  public static class SonCls extends ParentCls {
+
+    private String str;
+
+    public String getStr() {
+      return str;
+    }
+
+    public void setStr(String str) {
+      this.str = str;
+    }
+  }
+
+  public static class Stat {
+
+    int limit1;
+    int limit2;
+
+    public Stat(int limit1, int limit2) {
+      this.limit1 = limit1;
+      this.limit2 = limit2;
+    }
+
+    public int getLimit1() {
+      return limit1;
+    }
+
+    public void setLimit1(int limit1) {
+      this.limit1 = limit1;
+    }
+
+    public int getLimit2() {
+      return limit2;
+    }
+
+    public void setLimit2(int limit2) {
+      this.limit2 = limit2;
+    }
   }
 
   @Test
