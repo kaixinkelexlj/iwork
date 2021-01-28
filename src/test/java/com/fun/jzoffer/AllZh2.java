@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.junit.Test;
 
 /**
  * 没有重复数字的数组，全排列.
@@ -13,14 +12,13 @@ import org.junit.Test;
  */
 public class AllZh2 {
 
-  @Test
-  public void test() throws Exception {
+  public static void main(String[] args) {
     int[] nums = new int[]{1, 2, 3};
     List<List<Integer>> zhList = new Solution().runTask(nums);
     System.out.println(JSON.toJSONString(zhList));
   }
 
-  private class Solution {
+  private static class Solution {
 
     public List<List<Integer>> runTask(int[] nums) {
       if (nums == null || nums.length == 0) {
