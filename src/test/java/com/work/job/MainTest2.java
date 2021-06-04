@@ -40,6 +40,7 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -64,9 +65,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.RandomStringUtils;
@@ -74,6 +77,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.junit.Test;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.SimpleTypeConverter;
 import org.springframework.beans.TypeConverter;
 import org.springframework.util.Base64Utils;
@@ -83,6 +87,8 @@ import org.springframework.util.ReflectionUtils;
 
 @SuppressWarnings("all")
 public class MainTest2 extends AbstractTest {
+
+  private static final LocalTime STOP_CHECK_TIME = LocalTime.of(9, 30);
 
   private static final Integer[] ORDER_STATUS_INCLUDE = new Integer[]{2, 6};
 
@@ -105,7 +111,70 @@ public class MainTest2 extends AbstractTest {
   public static void main(String[] args) throws Exception {
     /*System.out.println("\u6210\u90FD");
     System.out.println("徐");*/
-    System.out.println((double)System.currentTimeMillis());
+    //System.out.println((double)System.currentTimeMillis());
+    //System.out.println(URLEncoder.encode("/hdp/jobcenter/result_set/job_id=33452366", "utf-8"));
+
+    System.out.println(URLDecoder.decode(
+        "isChooseDepartment=0&departmentLevel=&departmentName=&meetingRoomId=$v_room&meetingTheme=%E5%9B%A2%E9%98%9F%E5%91%A8%E4%BC%9A&startDate=$v_date&endDate=$v_date&startTime=$v_start_hour%3A00&endTime=$v_end_hour%3A00&type=&isService=0&remark=%3Cp%3E%3Cbr%3E%3C%2Fp%3E&persons=&areaName=%E5%8C%97%E4%BA%AC-%E6%B9%BE%E6%B5%81%E5%A4%A7%E5%8E%A6&simpleName=%E7%BB%8F%E7%BA%AC%EF%BC%88%E6%B9%BE%E6%B5%81%E5%A4%A7%E5%8E%A6%20B1%EF%BC%89&applyReason=&isSupportService=true&overCostCenter=&overReserveCost=0.00",
+        "utf8"));
+    System.out.println(URLEncoder.encode("团队周会", "utf8"));
+
+    System.out.println(URLEncoder
+        .encode("dps_external_exec_resource_capacity_dremio://10.83.179.54:8047", "utf-8"));
+    System.out.println(TimeUnit.DAYS.toSeconds(1));
+  }
+
+  @Test
+  public void testExceptionStack() throws Exception{
+    long start = System.currentTimeMillis();
+    for(int i = 0;i < 100000;i++){
+      //Thread.currentThread().getStackTrace();
+      Thread.currentThread().getName();
+    }
+    System.out.println("cost:" + (System.currentTimeMillis() - start));
+  }
+
+  @Test
+  public void testParallelOrder() throws Exception {
+    List<Integer> list = IntStream.rangeClosed(1, 1000).boxed().collect(Collectors.toList());
+    List<Integer> resultList = list.parallelStream().map(val -> {
+      try {
+        Thread.sleep(RandomUtils.nextInt(100));
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      return val;
+    }).collect(Collectors.toList());
+    list.forEach(System.out::println);
+  }
+
+  @Test
+  public void testLog() throws Exception {
+    debug("1243");
+    debug(() -> "12435");
+    debug("xxx:%s,%s", () -> 123, () -> "12121");
+  }
+
+  public static void debug(Supplier<String> msg) {
+    if (LoggerFactory.getLogger("test").isDebugEnabled()) {
+      LoggerFactory.getLogger("test").debug(msg.get());
+    }
+  }
+
+
+  public static void debug(String format, Supplier<?>... value) {
+    if (LoggerFactory.getLogger("test").isDebugEnabled()) {
+      LoggerFactory.getLogger("test")
+          .debug(String.format(format, (value == null ? null : Stream.of(value)
+              .map(Supplier::get).toArray(Object[]::new))));
+    }
+  }
+
+  @Test
+  public void testTime() throws Exception {
+    LocalTime time = LocalTime.parse("09:00", DateTimeFormatter.ofPattern("HH:mm"));
+    System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(time));
+    System.out.println(LocalTime.now().isAfter(STOP_CHECK_TIME));
   }
 
   @Test
@@ -213,6 +282,10 @@ public class MainTest2 extends AbstractTest {
     System.out.println(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
         .withZone(ZoneId.systemDefault())
         .format(new Date().toInstant()));
+    System.out.println(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+        .withZone(ZoneId.of("Etc/GMT-12"))
+        .format(new Date().toInstant()));
+
   }
 
   @Test
@@ -331,9 +404,31 @@ public class MainTest2 extends AbstractTest {
 
   @Test
   public void testRegexp() throws Exception {
-    Pattern pattern = Pattern.compile("(job_id=|task_unfinished_)");
+    //Pattern pattern = Pattern.compile("(job_id=|task_unfinished_)");
     // job_id=11834
     // task_unfinished_11841
+
+    String a = "a/b/100/test";
+
+    Pattern pattern = Pattern.compile(".+/(\\d+)/test");
+
+    System.out.println(parseIdFromUriPath(a, pattern));
+
+  }
+
+  private long parseIdFromUriPath(String path, Pattern pattern) {
+    if (StringUtils.isBlank(path) || pattern == null) {
+      return 0L;
+    }
+    try {
+      Matcher matcher = pattern.matcher(path);
+      if (matcher.find()) {
+        return NumberUtils.toLong(matcher.group(1));
+      }
+    } catch (Exception ex) {
+      throw ex;
+    }
+    return 0L;
   }
 
   @Test

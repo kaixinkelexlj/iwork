@@ -1,6 +1,5 @@
 package com.fun.jzoffer;
 
-import com.alibaba.fastjson.JSON;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,7 +14,9 @@ public class AllZh2 {
   public static void main(String[] args) {
     int[] nums = new int[]{1, 2, 3};
     List<List<Integer>> zhList = new Solution().runTask(nums);
-    System.out.println(JSON.toJSONString(zhList));
+    System.out.println(zhList.stream()
+        .map(list -> list.stream().map(String::valueOf).collect(Collectors.joining(",")))
+        .collect(Collectors.joining("\r\n")));
   }
 
   private static class Solution {
