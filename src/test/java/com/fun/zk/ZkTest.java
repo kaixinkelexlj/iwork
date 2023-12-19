@@ -1,6 +1,6 @@
 package com.fun.zk;
 
-import com.alibaba.fastjson.JSON;
+/*import com.alibaba.fastjson.JSON;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.data.Stat;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.Test;*/
 
 /**
  * @author xulujun
@@ -25,7 +25,7 @@ import org.junit.Test;
  */
 public class ZkTest {
 
-  private static final String HOSTS = "10.95.178.36:2181,10.94.130.128:2181,10.95.176.252:2181";
+  /*private static final String HOSTS = "10.95.178.36:2181,10.94.130.128:2181,10.95.176.252:2181";
   private static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
   private static final String ROOT_PATH = "/hosts/dps/dps-notify-center";
 
@@ -63,12 +63,12 @@ public class ZkTest {
     }
 
     //backgroupd listener
-    /*cf.getCuratorListenable().addListener(new CuratorListener() {
+    *//*cf.getCuratorListenable().addListener(new CuratorListener() {
       @Override
       public void eventReceived(CuratorFramework client, CuratorEvent event) throws Exception {
         System.out.println("listen==>" + JSON.toJSONString(event));
       }
-    });*/
+    });*//*
 
     cf.create().creatingParentContainersIfNeeded()
         .withMode(CreateMode.PERSISTENT)
@@ -88,7 +88,7 @@ public class ZkTest {
 
     //watchChildren(cf, ROOT_PATH);
     //System.out.println(ZkData.of(cf.getData().forPath(ROOT_PATH)));
-    /*
+    *//*
     List<String> childList = cf.getChildren().forPath(ROOT_PATH);
     Optional.ofNullable(childList).orElseGet(ArrayList::new)
         .forEach(System.out::println);
@@ -106,7 +106,7 @@ public class ZkTest {
     }
     childList = cf.getChildren().forPath(ROOT_PATH);
     Optional.ofNullable(childList).orElseGet(ArrayList::new)
-        .forEach(System.out::println);*/
+        .forEach(System.out::println);*//*
 
     Thread.sleep(3000);
 
@@ -142,7 +142,7 @@ public class ZkTest {
       return data == null || data.length == 0 ? "" : new String(data, DEFAULT_CHARSET);
     }
 
-  }
+  }*/
 
 
 }
