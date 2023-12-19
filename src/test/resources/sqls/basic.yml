@@ -1,0 +1,2 @@
+case1: select col1,col2  from tb1 where col1 is not null
+case2: select col1, col2 from (select col1,col2  from tb1 where col1 is not null) where if(col1 is not null,'ok','fail') ='ok'

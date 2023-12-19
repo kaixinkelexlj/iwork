@@ -58,12 +58,12 @@ public class GuavaFun extends AbstractTest {
     }
 
     public static void objects() throws Exception {
-        Object val = Objects.firstNonNull(null, 100);
+        /*Object val = Objects(null, 100);
         p(val);
         val = Objects.firstNonNull(200, 100);
         p(val);
         val = Objects.firstNonNull(null, null);
-        p(val);
+        p(val);*/
     }
 
     public static void testSplitor() throws Exception {
@@ -111,7 +111,7 @@ public class GuavaFun extends AbstractTest {
 
     public static void streams() throws Exception {
 
-        CharStreams.readLines(new InputSupplier<InputStreamReader>() {
+        /*CharStreams.readLines(new InputSupplier<InputStreamReader>() {
             @Override
             public InputStreamReader getInput() throws IOException {
                 return null;
@@ -128,7 +128,7 @@ public class GuavaFun extends AbstractTest {
                 return null;
             }
 
-        });
+        });*/
 
         //ByteStreams.copy(from, to)
     }
