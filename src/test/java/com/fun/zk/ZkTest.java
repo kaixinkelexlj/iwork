@@ -70,7 +70,7 @@ public class ZkTest {
       }
     });*/
 
-    cf.create().creatingParentContainersIfNeeded()
+    /*cf.create().creatingParentContainersIfNeeded()
         .withMode(CreateMode.PERSISTENT)
         .forPath(ROOT_PATH,
             ZkData.of("dps-notify-center-parent"));
@@ -84,7 +84,7 @@ public class ZkTest {
         .forPath(ROOT_PATH + "/host2", ZkData.of("ip2"));
     //cf.checkExists().usingWatcher(watcher).forPath(ROOT_PATH + "/host3");
     cf.create().withMode(CreateMode.EPHEMERAL)
-        .forPath(ROOT_PATH + "/host3", ZkData.of("ip3"));
+        .forPath(ROOT_PATH + "/host3", ZkData.of("ip3"));*/
 
     //watchChildren(cf, ROOT_PATH);
     //System.out.println(ZkData.of(cf.getData().forPath(ROOT_PATH)));

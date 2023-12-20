@@ -7,8 +7,6 @@
  */
 package com.work.job.mem;
 
-import com.work.job.MemUtils;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,19 +14,19 @@ import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.RandomUtils;
+
+import com.work.job.MemUtils;
+
 /**
  * @author lujun.xlj on 2017/3/8.
  */
 public class MemTest {
 
 
-
     public static void main(String[] args) throws Exception {
 
         Scanner input = new Scanner(System.in);
-        String cmd = null;
-        List<TestObj> list = null;
-
         System.out.println(MemUtils.total(MemUtils.Unit.MB));
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
             @Override
@@ -42,6 +40,7 @@ public class MemTest {
             }
         }, 0, 1, TimeUnit.SECONDS);
 
+        /*List<TestObj> list = null;
         while (input.hasNext()) {
             cmd = input.next();
             if ("clean".equals(cmd)) {
@@ -51,6 +50,23 @@ public class MemTest {
             if ("init".equals(cmd)) {
                 list = payLoad(500000);
             }
+            if ("exit".equals(cmd)) {
+                break;
+            }
+        }*/
+
+        String cmd = null;
+        List<Integer> list = new ArrayList<>(0);
+        while (input.hasNext()) {
+            cmd = input.next();
+            if ("add".equalsIgnoreCase(cmd)) {
+                System.out.println("add start");
+                for (int i = 0; i < 5000000; i++) {
+                    list.add(RandomUtils.nextInt());
+                }
+                System.out.println("add end");
+            }
+            Thread.sleep(2000L);
             if ("exit".equals(cmd)) {
                 break;
             }
@@ -78,157 +94,157 @@ public class MemTest {
         /**
          * 主键
          */
-        private Long              id;
+        private Long id;
 
         /**
          * 影院标识
          */
-        private Long              cinemaId;
+        private Long cinemaId;
 
         /**
          * 影院名称
          */
-        private String            cinemaName;
+        private String cinemaName;
 
         /**
          * 影院标准8位码
          */
-        private String            standardId;
+        private String standardId;
 
         /**
          * 城市标识
          */
-        private Long              cityId;
+        private Long cityId;
 
         /**
          * 城市名称
          */
-        private String            cityName;
+        private String cityName;
 
         /**
          * 省份
          */
-        private Long              provinceId;
+        private Long provinceId;
 
         /**
          * 省份名称
          */
-        private String            provinceName;
+        private String provinceName;
 
         /**
          * 区域id
          */
-        private Long              districtId;
+        private Long districtId;
 
         /**
          * 区域名称
          */
-        private String            districtName;
+        private String districtName;
 
         /**
          * 影管公司code
          */
-        private String            companyCode;
+        private String companyCode;
 
         /**
          * 影管公司名称
          */
-        private String            companyName;
+        private String companyName;
 
         /**
          * 专资办票房，单位分
          */
-        private Long              zzbBoxOffice;
+        private Long zzbBoxOffice;
 
         /**
          * 专资办人次
          */
-        private Integer           zzbTicketTotal;
+        private Integer zzbTicketTotal;
 
         /**
          * 淘票票票房，单位分
          */
-        private Long              tppBoxOffice;
+        private Long tppBoxOffice;
 
         /**
          * 淘票票出票（张）
          */
-        private Integer           tppTicketTotal;
+        private Integer tppTicketTotal;
 
         /**
          * 淘票票票房占比
          */
-        private Double            tppBoxOfficePercent;
+        private Double tppBoxOfficePercent;
 
         /**
          * 淘票票人次占比
          */
-        private Double            tppTicketPercent;
+        private Double tppTicketPercent;
 
         /**
          * 活动票总数
          */
-        private Integer           actTicketTotal;
+        private Integer actTicketTotal;
 
         /**
          * 补贴金额,单位分
          */
-        private Long              subsidyTotal;
+        private Long subsidyTotal;
 
         /**
          * 活动票占比
          */
-        private Double            actTicketPercent;
+        private Double actTicketPercent;
 
         /**
          * 淘票票排名
          */
-        private Integer           tppRank;
+        private Integer tppRank;
 
         /**
          * 专资办排名
          */
-        private Integer           zzbRank;
+        private Integer zzbRank;
 
         /**
          * 淘票票总购票金额/总活动补贴金额
          */
-        private Double            roi;
+        private Double roi;
 
         /**
          * 单张票补，分,淘票票总活动补贴金额/总活动补贴票数
          */
-        private Long              subsidySingle;
+        private Long subsidySingle;
 
         /**
          * 单票成本,淘票票总活动补贴金额/总出票数
          */
-        private Long              costSingle;
+        private Long costSingle;
 
         /**
          * 专资办结算均价
          */
-        private Long              zzbSettlementAvg;
+        private Long zzbSettlementAvg;
 
         /**
          * 淘票票结算均价
          */
-        private Long              tppSettlementAvg;
+        private Long tppSettlementAvg;
 
         /**
          * 专资办结算均价-淘票票结算均价,单位分
          */
-        private Long              settlementAvgDiff;
+        private Long settlementAvgDiff;
 
         /**
          * 与大盘份额差值,当前影院或城市淘票票人次占比减去淘票票全国人次占比
          */
-        private Double            ticketPercentDiff;
+        private Double ticketPercentDiff;
 
         /**
          * 份额环比，本期与大盘份额差值-上期与大盘份额差值
          */
-        private Double            diffThanBefore;
+        private Double diffThanBefore;
 
         public Long getId() {
             return id;

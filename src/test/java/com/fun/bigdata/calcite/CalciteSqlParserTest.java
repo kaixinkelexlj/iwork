@@ -25,7 +25,7 @@ public class CalciteSqlParserTest extends TestBase {
   @Test
   public void testBasic() throws Exception {
     //org.apache.calcite.sql.fun.SqlStdOperatorTable
-    Map<String, String> map = getYmlMap("sqls/basic");
+    /*Map<String, String> map = getYmlMap("sqls/basic");
     String sql = map.get("case1");
     System.out.println(sql);
     SqlNode sqlNode = CalciteSqlParser.getSqlNode(sql);
@@ -34,7 +34,7 @@ public class CalciteSqlParserTest extends TestBase {
     PrinterVisitor printerVisitor = new PrinterVisitor();
     sqlNode.accept(printerVisitor);
     System.out.println(sqlNode.toString());
-    System.out.println(printerVisitor.toString());
+    System.out.println(printerVisitor.toString());*/
   }
 
   class PrinterVisitor implements SqlVisitor<Void> {

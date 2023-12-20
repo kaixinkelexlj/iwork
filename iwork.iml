@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="CheckStyle-IDEA-Module">
+    <option name="configuration">
+      <map />
+    </option>
+  </component>
   <component name="FacetManager">
-    <facet type="Python" name="Python">
-      <configuration sdkName="" />
+    <facet type="Spring" name="Spring">
+      <configuration />
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
@@ -18,19 +23,21 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
-      <library>
+      <library name="crowd_insight-1.0-SNAPSHOT-jar-with-dependencies-cdp">
         <CLASSES>
-          <root url="file://$MODULE_DIR$/lib" />
+          <root url="jar://$MODULE_DIR$/../viewjar/crowd_insight-1.0-SNAPSHOT-jar-with-dependencies-cdp.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
-        <jarDirectory url="file://$MODULE_DIR$/lib" recursive="false" />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../viewjar/crowd_insight-1.0-SNAPSHOT-jar-with-dependencies-cdp.jar!/" />
+        </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" name="ClickHouseHadoopUDAF (2)" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/tmp/BOOT-INF/lib/dps-client-common-1.0.0-SNAPSHOT.jar!/" />
+          <root url="jar://$MODULE_DIR$/../cdp/kuaishou-ad-cdp-de/03-投后结案-查询/XmlSqlGenerator.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -72,6 +79,8 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:5.0.7.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:5.0.7.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.0.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.roaringbitmap:RoaringBitmap:0.9.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.roaringbitmap:shims:0.9.0" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.8.13" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.8.13" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.7" level="project" />

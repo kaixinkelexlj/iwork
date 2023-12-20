@@ -2,6 +2,16 @@ package com.work.job.bean;
 
 public class Parent {
 
+    private Integer age;
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
     public void test1() {
         System.out.println("test1");
     }

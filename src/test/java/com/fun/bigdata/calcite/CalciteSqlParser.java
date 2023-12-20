@@ -12,7 +12,7 @@ import org.apache.calcite.sql.validate.SqlConformance;
 import org.apache.calcite.sql.validate.SqlConformanceEnum;
 
 public class CalciteSqlParser {
-  //---SqlParser配置参数
+  /*//---SqlParser配置参数
   static final Quoting quoting = Quoting.BACK_TICK;
   static final Casing unquotedCasing = Casing.UNCHANGED;
   static final Casing quotedCasing = Casing.UNCHANGED;
@@ -25,11 +25,11 @@ public class CalciteSqlParser {
       .setConformance(conformance)
       .build();
 
-  /**
+  *//**
    * 获取SqlNode
    * @param sqlStatement Sql语句
    * @return             SqlNode
-   */
+   *//*
   public static SqlNode getSqlNode(String sqlStatement) throws SqlParseException {
     SqlParser sqlParser = getSqlParser(sqlStatement);
     SqlNode sqlNode = null;
@@ -37,11 +37,11 @@ public class CalciteSqlParser {
     return sqlNode;
   }
 
-  /**
+  *//**
    * 获取SqlNode
    * @param expression  expression语句
    * @return            SqlNode
-   */
+   *//*
   public static SqlNode getSqlNodeOfExp(String expression) throws SqlParseException {
     SqlParser sqlParser = getSqlParser(expression);
     SqlNode sqlNode = null;
@@ -49,22 +49,22 @@ public class CalciteSqlParser {
     return sqlNode;
   }
 
-  /**
+  *//**
    * 获取用户自定义SqlParser
    * @param sqlStatement  Sql语句
    * @return              用户自定义SqlParser
-   */
+   *//*
   public static SqlParser getSqlParser(String sqlStatement) {
     return SqlParser.create(sqlStatement, config);
   }
 
 
-  /***
+  *//***
    * 关键字转置处理
    * 公司hive仓库分区字段year、month、day 和calcite关键字冲突，做转置处理
    * @param sqlStatement Sql语句
    * @return 转置处理后的Sql语句
-   */
+   *//*
   public static String quotingKeyWords(String sqlStatement) {
     //前后项断言处理
     String patternYear = "(?<!\\w|_|`|')(year|YEAR)(?!\\w|_)";
@@ -79,7 +79,7 @@ public class CalciteSqlParser {
       .replaceAll(patternWeek, "`week`");
   }
 
-  /**
+  *//**
    * calcite（以及presto）不支持数字开头的标识符，需要添加转置
    * 如
    * SUM(table_1527044669654.7_before_reg_dri_num) as 7_before_reg_dri_num
@@ -87,7 +87,7 @@ public class CalciteSqlParser {
    * SUM(table_1527044669654.`7_before_reg_dri_num`) as `7_before_reg_dri_num`
    * @param sqlStatement Sql语句
    * @return 转置处理后的Sql语句
-   */
+   *//*
   public static String quotingNumericIdentifer(String sqlStatement) {
     String regex = "(?<![\\w|'|`])(\\d+[_a-zA-Z]+[_a-zA-Z0-9]*)(?!\\w|_|`|')";
     Pattern pattern = Pattern.compile(regex);
@@ -100,12 +100,12 @@ public class CalciteSqlParser {
     return sqlStatement;
   }
 
-  /**
+  *//**
    * 转置非法标识符
    * @param sqlStatement Sql语句
    * @return 转置处理后的Sql语句
-   */
+   *//*
   public static String quotingIllegalIdentifer(String sqlStatement) {
     return quotingKeyWords(sqlStatement);
-  }
+  }*/
 }
