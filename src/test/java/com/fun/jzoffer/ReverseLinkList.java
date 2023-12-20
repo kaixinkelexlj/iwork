@@ -1,7 +1,8 @@
 package com.fun.jzoffer;
 
-import com.fun.jzoffer.model.IntListNode;
 import org.junit.Test;
+
+import com.fun.jzoffer.model.IntListNode;
 
 /**
  * @author xulujun 2020/06/05.
@@ -17,8 +18,8 @@ public class ReverseLinkList {
         .next(new IntListNode(3))
         .next(new IntListNode(4));
     System.out.println(head.toString());
-    // printNodeList(reverse(head));
-    System.out.println(reverseRecursive(head).toString());
+    printNodeList(reverse(head));
+    // System.out.println(reverseRecursive(head).toString());
   }
 
   @SuppressWarnings("unchecked")

@@ -25,7 +25,8 @@ import org.junit.Test;*/
  */
 public class ZkTest {
 
-  /*private static final String HOSTS = "10.95.178.36:2181,10.94.130.128:2181,10.95.176.252:2181";
+  /*
+  private static final String HOSTS = "10.95.178.36:2181,10.94.130.128:2181,10.95.176.252:2181";
   private static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
   private static final String ROOT_PATH = "/hosts/dps/dps-notify-center";
 
@@ -84,11 +85,11 @@ public class ZkTest {
         .forPath(ROOT_PATH + "/host2", ZkData.of("ip2"));
     //cf.checkExists().usingWatcher(watcher).forPath(ROOT_PATH + "/host3");
     cf.create().withMode(CreateMode.EPHEMERAL)
-        .forPath(ROOT_PATH + "/host3", ZkData.of("ip3"));*/
+        .forPath(ROOT_PATH + "/host3", ZkData.of("ip3"));
 
     //watchChildren(cf, ROOT_PATH);
     //System.out.println(ZkData.of(cf.getData().forPath(ROOT_PATH)));
-    *//*
+
     List<String> childList = cf.getChildren().forPath(ROOT_PATH);
     Optional.ofNullable(childList).orElseGet(ArrayList::new)
         .forEach(System.out::println);
@@ -106,7 +107,7 @@ public class ZkTest {
     }
     childList = cf.getChildren().forPath(ROOT_PATH);
     Optional.ofNullable(childList).orElseGet(ArrayList::new)
-        .forEach(System.out::println);*//*
+        .forEach(System.out::println);
 
     Thread.sleep(3000);
 
