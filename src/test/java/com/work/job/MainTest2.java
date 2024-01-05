@@ -1316,6 +1316,7 @@ public class MainTest2 extends AbstractTest {
         }
     }
 
+    @Test
     public void testDecimal() {
         System.out.println(
                 new BigDecimal(String.valueOf(0.3d)).subtract(new BigDecimal(String.valueOf(0.1d)))
@@ -1326,6 +1327,8 @@ public class MainTest2 extends AbstractTest {
         System.out.println(
                 new BigDecimal(1).divide(new BigDecimal(3), 4, RoundingMode.HALF_UP).doubleValue());
         System.out.println(1.0 / 3.0);
+        System.out.println(new BigDecimal(0.11D));
+        System.out.println(new BigDecimal("0.11"));
     }
 
     public static void testScheduledTask() throws Exception {
