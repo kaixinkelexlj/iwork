@@ -22,7 +22,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
-    <lucene.version>5.5.1</lucene.version>
+    <lucene.version>8.3.1</lucene.version>
     <jline.version>3.7.1</jline.version>
     <curator.version>2.11.0</curator.version>
     <hive.version>2.1.1</hive.version>
